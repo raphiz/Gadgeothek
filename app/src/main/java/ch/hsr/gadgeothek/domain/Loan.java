@@ -1,9 +1,10 @@
 package ch.hsr.gadgeothek.domain;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Loan {
+public class Loan implements Serializable{
 
     private String id;
     private Gadget gadget;

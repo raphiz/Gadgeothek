@@ -1,8 +1,9 @@
 package ch.hsr.gadgeothek.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Reservation {
+public class Reservation implements Serializable{
 
     private String id;
     private Gadget gadget;
