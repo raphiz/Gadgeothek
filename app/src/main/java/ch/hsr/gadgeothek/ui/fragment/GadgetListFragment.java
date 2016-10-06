@@ -3,17 +3,26 @@ package ch.hsr.gadgeothek.ui.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.hsr.gadgeothek.R;
+import ch.hsr.gadgeothek.domain.Gadget;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link GadgetListFragment.OnFragmentInteractionListener} interface
+ * {@link GadgetListFragment.OnGadgetListInteractionListener} interface
  * to handle interaction events.
  * Use the {@link GadgetListFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -22,13 +31,12 @@ public class GadgetListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ListView gadgetListView;
 
-    private OnFragmentInteractionListener mListener;
+    private List<Gadget> gadgetList;
+
+    private OnGadgetListInteractionListener mListener;
 
     public GadgetListFragment() {
         // Required empty public constructor
@@ -38,16 +46,13 @@ public class GadgetListFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment GadgetListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static GadgetListFragment newInstance(String param1, String param2) {
+    public static GadgetListFragment newInstance(ArrayList<Gadget> gadgetList) {
         GadgetListFragment fragment = new GadgetListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_PARAM1, gadgetList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,8 +61,7 @@ public class GadgetListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+           gadgetList = (List<Gadget>) getArguments().getSerializable(ARG_PARAM1);
         }
     }
 
@@ -65,21 +69,31 @@ public class GadgetListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gadget_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_gadget_list, container, false);
+        gadgetListView = (ListView) rootView.findViewById(R.id.gadgedListView);
+
+        populateListView();
+
+        return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    private void populateListView() {
+        Gadget mockGadget1 = new Gadget("GoPro 3 Hero");
+        mockGadget1.setManufacturer("GoPro");
+        Gadget mockGadget2 = new Gadget("Phantom IV");
+        mockGadget1.setManufacturer("DJI");
+        gadgetList.add(mockGadget1);
+        gadgetList.add(mockGadget2);
+        ArrayAdapter<Gadget> adapter = new GadgetItemAdapter();
+
+        gadgetListView.setAdapter(adapter);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnGadgetListInteractionListener) {
+            mListener = (OnGadgetListInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -102,8 +116,33 @@ public class GadgetListFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnGadgetListInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onGadgetListInteraction(Uri uri);
+    }
+
+    public class GadgetItemAdapter extends ArrayAdapter<Gadget> {
+
+        public GadgetItemAdapter() {
+            super(getActivity(), R.layout.gadgetview_item);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final Gadget gadget = gadgetList.get(position);
+            if (convertView == null) {
+                LayoutInflater layoutInflater =
+                        (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = layoutInflater.inflate(R.layout.gadgetview_item, null);
+            }
+
+            TextView manufacturerView = (TextView) convertView.findViewById(R.id.textViewManufacturer);
+            TextView gadgetNameView = (TextView) convertView.findViewById(R.id.textViewGadgetName);
+
+            manufacturerView.setText(gadget.getManufacturer());
+            gadgetNameView.setText(gadget.getName());
+
+            return convertView;
+        }
     }
 }
