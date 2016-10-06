@@ -19,5 +19,6 @@
         <activity android:name=".ui.SignupActivity" />
         <activity android:name=".ui.GadgetDetailActivity"></activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
