@@ -10,4 +10,89 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ch.hsr.gadgeothek.ui.SignupActivity">
 
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/app_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    <TextView
+        android:id="@+id/versionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleTextView"
+        android:layout_gravity="bottom"
+        android:layout_toEndOf="@id/titleTextView"
+        android:layout_toRightOf="@id/titleTextView"
+        android:maxLines="1"
+        android:text="@string/version_nr"
+        android:textSize="10sp" />
+
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:layout_below="@id/versionTextView"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/name"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/studentNumberEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:layout_below="@id/nameEditText"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/student_number"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/emailAddressEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:layout_below="@id/studentNumberEditText"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/email_address"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:layout_below="@id/emailAddressEditText"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/password"
+        android:layout_marginBottom="8dp" />
+
+    <Switch
+        android:id="@+id/keepMeLoggedInSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/keep_me_logged_in"
+        android:checked="true"
+        android:layout_below="@id/passwordEditText"
+        android:layout_alignStart="@id/passwordEditText"
+        android:layout_alignEnd="@id/passwordEditText" />
+
+    <Button
+        android:id="@+id/signupButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signup"
+        android:layout_below="@id/keepMeLoggedInSwitch"
+        android:layout_alignStart="@id/keepMeLoggedInSwitch"/>
+
 </RelativeLayout>

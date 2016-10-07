@@ -3,4 +3,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="version_nr">Version 1.0</string>
+    <string name="email_address">email address</string>
+    <string name="password">password</string>
+    <string name="keep_me_logged_in">keep me logged in</string>
+    <string name="login">login</string>
+    <string name="signup">signup</string>
+    <string name="name">name</string>
+    <string name="student_number">student number</string>
 </resources>
