@@ -28,8 +28,9 @@ public class LibraryService {
     public static boolean isLoggedIn() {
         return token != null;
     }
+    public static boolean keepMeLoggedIn() {return token != null && token.getKeepMeLoggedIn(); }
 
-    public static void login(String mail, String password, final Callback<Boolean> callback) {
+    public static void login(String mail, String password, final boolean keepMeLoggedIn, final Callback<Boolean> callback) {
         HashMap<String, String> parameter = new HashMap<>();
         parameter.put("email", mail);
         parameter.put("password", password);
@@ -37,6 +38,7 @@ public class LibraryService {
             @Override
             public void onCompletion(LoginToken input) {
                 token = input;
+                token.setKeepMeLoggedIn(keepMeLoggedIn);
                 callback.onCompletion(input != null && !input.getSecurityToken().isEmpty());
             }
 
