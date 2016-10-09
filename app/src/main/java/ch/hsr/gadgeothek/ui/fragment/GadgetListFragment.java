@@ -95,7 +95,7 @@ public class GadgetListFragment extends Fragment {
             gadgetListCallback = (GadgetListCallback) activity;
         } else {
             throw new RuntimeException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement GadgetListCallback");
         }
     }
 

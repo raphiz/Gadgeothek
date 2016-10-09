@@ -1,5 +1,6 @@
 package ch.hsr.gadgeothek.ui;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -66,8 +67,11 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
 
     @Override
     public void onGadgetClicked(Gadget gadget) {
-        // TODO: Open details view here
+        // TODO: Distinguish between phone and tablet
         Log.d("LOG", "You clicked on: " + gadget.getName());
+        Intent fragmentIntent = new Intent(this, GadgetDetailActivity.class);
+        fragmentIntent.putExtra("GADGET", gadget);
+        startActivity(fragmentIntent);
     }
 
     public static class CustomAdapter extends FragmentPagerAdapter {
