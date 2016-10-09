@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.ui.fragment.GadgetListFragment;
-import ch.hsr.gadgeothek.ui.fragment.PseudoGadgetListFragment;
 
 public class MainActivity extends AppCompatActivity implements GadgetListCallback {
 
