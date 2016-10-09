@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import ch.hsr.gadgeothek.R;
+import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.ui.fragment.GadgetDetailFragment;
 
@@ -28,7 +29,7 @@ public class GadgetDetailActivity extends AppCompatActivity implements GadgetDet
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         fragmentManager = getSupportFragmentManager();
-        gadget = (Gadget) getIntent().getSerializableExtra(Constants.GADGET);
+        gadget = (Gadget) getIntent().getSerializableExtra(Constant.GADGET);
 
         Fragment detailFragment = GadgetDetailFragment.newInstance(gadget);
 

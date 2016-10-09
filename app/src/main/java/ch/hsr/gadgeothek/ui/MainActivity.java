@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         // TODO: Distinguish between phone and tablet
         Log.d("LOG", "You clicked on: " + gadget.getName());
         Intent fragmentIntent = new Intent(this, GadgetDetailActivity.class);
-        fragmentIntent.putExtra(Constants.GADGET, gadget);
+        fragmentIntent.putExtra(Constant.GADGET, gadget);
         startActivity(fragmentIntent);
     }
 
@@ -83,17 +83,17 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         @Override
         public Fragment getItem(int position) {
             // TODO: Pass List of Gadgets to fragment
-            return GadgetListFragment.getInstance(Constants.pageTitles[position], new ArrayList<Gadget>());
+            return GadgetListFragment.getInstance(Constant.pageTitles[position], new ArrayList<Gadget>());
         }
 
         @Override
         public int getCount() {
-            return Constants.pageTitles.length;
+            return Constant.pageTitles.length;
         }
 
         @Override
         public CharSequence getPageTitle(int position){
             // TODO: Localize!
-            return Constants.pageTitles[position];
+            return Constant.pageTitles[position];
         }
     }}

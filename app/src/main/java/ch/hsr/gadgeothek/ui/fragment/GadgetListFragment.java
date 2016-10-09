@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.gadgeothek.R;
+import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.domain.Gadget;
-import ch.hsr.gadgeothek.ui.Constants;
 import ch.hsr.gadgeothek.ui.GadgetListCallback;
 
 
@@ -37,8 +37,8 @@ public class GadgetListFragment extends Fragment {
     public static GadgetListFragment getInstance(String pagetTitle, ArrayList<Gadget> gadgetList) {
         GadgetListFragment fragment = new GadgetListFragment();
         Bundle args = new Bundle();
-        args.putString(Constants.PAGE_TITLE, pagetTitle);
-        args.putSerializable(Constants.GADGET_LIST, gadgetList);
+        args.putString(Constant.PAGE_TITLE, pagetTitle);
+        args.putSerializable(Constant.GADGET_LIST, gadgetList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,8 +47,8 @@ public class GadgetListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            pageTitle = getArguments().getString(Constants.PAGE_TITLE);
-            gadgetList = (List<Gadget>) getArguments().getSerializable(Constants.GADGET_LIST);
+            pageTitle = getArguments().getString(Constant.PAGE_TITLE);
+            gadgetList = (List<Gadget>) getArguments().getSerializable(Constant.GADGET_LIST);
         }
     }
 
