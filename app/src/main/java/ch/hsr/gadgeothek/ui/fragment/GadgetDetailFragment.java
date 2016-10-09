@@ -12,12 +12,11 @@ import android.widget.TextView;
 
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.domain.Gadget;
+import ch.hsr.gadgeothek.ui.Constants;
 import ch.hsr.gadgeothek.ui.GadgetDetailCallback;
 
 
 public class GadgetDetailFragment extends Fragment {
-
-    private static final String GADGET = "GADGET";
 
     private Gadget gadget;
 
@@ -31,7 +30,7 @@ public class GadgetDetailFragment extends Fragment {
     public static GadgetDetailFragment newInstance(Gadget gadget) {
         GadgetDetailFragment fragment = new GadgetDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable(GADGET, gadget);
+        args.putSerializable(Constants.GADGET, gadget);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,7 +39,7 @@ public class GadgetDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            gadget = (Gadget) getArguments().getSerializable(GADGET);
+            gadget = (Gadget) getArguments().getSerializable(Constants.GADGET);
         }
     }
 

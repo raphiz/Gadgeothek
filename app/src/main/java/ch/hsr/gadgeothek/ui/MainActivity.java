@@ -16,6 +16,7 @@ import android.view.Menu;
 import java.util.ArrayList;
 
 import ch.hsr.gadgeothek.R;
+import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.ui.fragment.GadgetListFragment;
 
@@ -25,8 +26,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     private TabLayout tabs;
     private ViewPager pager;
 
-    // TODO: delete when implementing properly!
-    public static final String[] pageTitles = {"Gadgets", "Ausleihen", "Reservationen"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         // TODO: Distinguish between phone and tablet
         Log.d("LOG", "You clicked on: " + gadget.getName());
         Intent fragmentIntent = new Intent(this, GadgetDetailActivity.class);
-        fragmentIntent.putExtra("GADGET", gadget);
+        fragmentIntent.putExtra(Constants.GADGET, gadget);
         startActivity(fragmentIntent);
     }
 
@@ -83,17 +83,17 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         @Override
         public Fragment getItem(int position) {
             // TODO: Pass List of Gadgets to fragment
-            return GadgetListFragment.getInstance(pageTitles[position], new ArrayList<Gadget>());
+            return GadgetListFragment.getInstance(Constants.pageTitles[position], new ArrayList<Gadget>());
         }
 
         @Override
         public int getCount() {
-            return pageTitles.length;
+            return Constants.pageTitles.length;
         }
 
         @Override
         public CharSequence getPageTitle(int position){
             // TODO: Localize!
-            return pageTitles[position];
+            return Constants.pageTitles[position];
         }
     }}

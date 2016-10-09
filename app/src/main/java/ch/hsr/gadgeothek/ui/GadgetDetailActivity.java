@@ -13,7 +13,6 @@ import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.ui.fragment.GadgetDetailFragment;
 
 public class GadgetDetailActivity extends AppCompatActivity implements GadgetDetailCallback{
-    private static final String GADGET = "GADGET";
 
     FragmentManager fragmentManager;
     Gadget gadget;
@@ -29,7 +28,7 @@ public class GadgetDetailActivity extends AppCompatActivity implements GadgetDet
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         fragmentManager = getSupportFragmentManager();
-        gadget = (Gadget) getIntent().getSerializableExtra(GADGET);
+        gadget = (Gadget) getIntent().getSerializableExtra(Constants.GADGET);
 
         Fragment detailFragment = GadgetDetailFragment.newInstance(gadget);
 
