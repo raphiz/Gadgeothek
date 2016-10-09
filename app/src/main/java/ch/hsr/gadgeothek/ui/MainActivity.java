@@ -12,8 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 
+import java.util.ArrayList;
+
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.domain.Gadget;
+import ch.hsr.gadgeothek.ui.fragment.GadgetListFragment;
 import ch.hsr.gadgeothek.ui.fragment.PseudoGadgetListFragment;
 
 public class MainActivity extends AppCompatActivity implements GadgetListCallback {
@@ -76,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
 
         @Override
         public Fragment getItem(int position) {
-            // TODO: Initialize fragments properly
-            return PseudoGadgetListFragment.getInstance(pageTitles[position]);
+            // TODO: Pass List of Gadgets to fragment
+            return GadgetListFragment.getInstance(pageTitles[position], new ArrayList<Gadget>());
         }
 
         @Override

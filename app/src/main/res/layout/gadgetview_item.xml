@@ -2,8 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:padding="@dimen/text_margin">
 
+    <TextView
+        android:text="Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewGadgetName"
+        android:layout_weight="1"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
 
     <TextView
         android:text="Hersteller"
@@ -11,13 +19,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewManufacturer"
         android:layout_weight="1"
-        android:textAppearance="@android:style/TextAppearance.Holo.Small" />
+        android:textAppearance="@android:style/TextAppearance.Holo.Small"
+        android:textAlignment="textEnd" />
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewGadgetName"
-        android:layout_weight="1"
-        android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
 </LinearLayout>

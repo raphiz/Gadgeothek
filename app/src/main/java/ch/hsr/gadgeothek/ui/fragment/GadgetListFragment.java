@@ -1,58 +1,45 @@
 package ch.hsr.gadgeothek.ui.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.domain.Gadget;
+import ch.hsr.gadgeothek.ui.GadgetListCallback;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GadgetListFragment.OnGadgetListInteractionListener} interface
- * to handle interaction events.
- * Use the {@link GadgetListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class GadgetListFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String GADGET_LIST = "GADGET_LIST";
+    public static final String PAGE_TITLE = "PAGE_TITLE";
+
+    private String pageTitle;
 
     private ListView gadgetListView;
 
     private List<Gadget> gadgetList;
 
-    private OnGadgetListInteractionListener mListener;
+    private GadgetListCallback gadgetListCallback;
 
     public GadgetListFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment GadgetListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static GadgetListFragment newInstance(ArrayList<Gadget> gadgetList) {
+    public static GadgetListFragment getInstance(String pagetTitle, ArrayList<Gadget> gadgetList) {
         GadgetListFragment fragment = new GadgetListFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, gadgetList);
+        args.putString(PAGE_TITLE, pagetTitle);
+        args.putSerializable(GADGET_LIST, gadgetList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,7 +48,8 @@ public class GadgetListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-           gadgetList = (List<Gadget>) getArguments().getSerializable(ARG_PARAM1);
+            pageTitle = getArguments().getString(PAGE_TITLE);
+            gadgetList = (List<Gadget>) getArguments().getSerializable(GADGET_LIST);
         }
     }
 
@@ -72,30 +60,41 @@ public class GadgetListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_gadget_list, container, false);
         gadgetListView = (ListView) rootView.findViewById(R.id.gadgedListView);
 
+        gadgetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Gadget clickedGaddget = (Gadget) parent.getItemAtPosition(position);
+                gadgetListCallback.onGadgetClicked(clickedGaddget);
+            }
+        });
+
+
         populateListView();
 
         return rootView;
     }
 
     private void populateListView() {
-        Gadget mockGadget1 = new Gadget("GoPro 3 Hero");
-        mockGadget1.setManufacturer("GoPro");
-        Gadget mockGadget2 = new Gadget("Phantom IV");
-        mockGadget1.setManufacturer("DJI");
-        gadgetList.add(mockGadget1);
-        gadgetList.add(mockGadget2);
-        ArrayAdapter<Gadget> adapter = new GadgetItemAdapter();
+        if (gadgetList.isEmpty()) {
+            Gadget mockGadget1 = new Gadget("GoPro 3 Hero");
+            mockGadget1.setManufacturer("GoPro");
+            Gadget mockGadget2 = new Gadget("Phantom IV");
+            mockGadget2.setManufacturer("DJI");
+            gadgetList.add(mockGadget1);
+            gadgetList.add(mockGadget2);
+        }
+        ArrayAdapter<Gadget> adapter = new GadgetItemAdapter(gadgetList);
 
         gadgetListView.setAdapter(adapter);
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnGadgetListInteractionListener) {
-            mListener = (OnGadgetListInteractionListener) context;
+    public void onAttach(Context activity) {
+        super.onAttach(activity);
+        if (activity instanceof GadgetListCallback) {
+            gadgetListCallback = (GadgetListCallback) activity;
         } else {
-            throw new RuntimeException(context.toString()
+            throw new RuntimeException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
@@ -103,28 +102,16 @@ public class GadgetListFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnGadgetListInteractionListener {
-        // TODO: Update argument type and name
-        void onGadgetListInteraction(Uri uri);
+        gadgetList = null;
+        gadgetListCallback = null;
     }
 
     public class GadgetItemAdapter extends ArrayAdapter<Gadget> {
+        private List<Gadget> gadgetList;
 
-        public GadgetItemAdapter() {
+        public GadgetItemAdapter(List<Gadget> gadgetList) {
             super(getActivity(), R.layout.gadgetview_item);
+            this.gadgetList = gadgetList;
         }
 
         @Override
@@ -143,6 +130,16 @@ public class GadgetListFragment extends Fragment {
             gadgetNameView.setText(gadget.getName());
 
             return convertView;
+        }
+
+        @Override
+        public Gadget getItem(int position) {
+            return gadgetList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return gadgetList.size();
         }
     }
 }
