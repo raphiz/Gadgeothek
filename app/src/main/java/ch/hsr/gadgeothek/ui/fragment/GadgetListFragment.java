@@ -3,6 +3,7 @@ package ch.hsr.gadgeothek.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import java.util.List;
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.domain.Gadget;
+import ch.hsr.gadgeothek.service.Callback;
+import ch.hsr.gadgeothek.service.LibraryService;
 import ch.hsr.gadgeothek.ui.GadgetListCallback;
 
 
@@ -75,16 +78,21 @@ public class GadgetListFragment extends Fragment {
 
     private void populateListView() {
         if (gadgetList.isEmpty()) {
-            Gadget mockGadget1 = new Gadget("GoPro 3 Hero");
-            mockGadget1.setManufacturer("GoPro");
-            Gadget mockGadget2 = new Gadget("Phantom IV");
-            mockGadget2.setManufacturer("DJI");
-            gadgetList.add(mockGadget1);
-            gadgetList.add(mockGadget2);
-        }
-        ArrayAdapter<Gadget> adapter = new GadgetItemAdapter(gadgetList);
+            LibraryService.getGadgets(new Callback<List<Gadget>>() {
+                @Override
+                public void onCompletion(List<Gadget> input) {
+                    gadgetList.addAll(input);
+                    gadgetListView.setAdapter(new GadgetItemAdapter(gadgetList));
+                }
 
-        gadgetListView.setAdapter(adapter);
+                @Override
+                public void onError(String message) {
+                    //TODO error handling
+                    Log.e("load gadgets", "error during loading gadgets: " + message);
+                }
+            });
+        }
+
     }
 
     @Override
