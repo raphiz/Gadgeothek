@@ -3,6 +3,7 @@ package ch.hsr.gadgeothek.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,10 +129,17 @@ public class GadgetListFragment extends Fragment {
                 LayoutInflater layoutInflater =
                         (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = layoutInflater.inflate(R.layout.gadgetview_item, null);
+
+                TextView gadgetNameView = (TextView) convertView.findViewById(R.id.textViewGadgetName);
+                TextView manufacturerView = (TextView) convertView.findViewById(R.id.textViewManufacturer);
+
+                Pair<TextView, TextView> views = new Pair<>(gadgetNameView, manufacturerView);
+                convertView.setTag(views);
             }
 
-            TextView manufacturerView = (TextView) convertView.findViewById(R.id.textViewManufacturer);
-            TextView gadgetNameView = (TextView) convertView.findViewById(R.id.textViewGadgetName);
+            Pair<TextView, TextView> views = (Pair<TextView, TextView>)  convertView.getTag();
+            TextView gadgetNameView = views.first;
+            TextView manufacturerView = views.second;
 
             manufacturerView.setText(gadget.getManufacturer());
             gadgetNameView.setText(gadget.getName());
