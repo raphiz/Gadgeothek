@@ -8,6 +8,12 @@
         <!--android:title="Search">-->
     <!--</item>-->
     <item
+        android:id="@+id/refreshMenu"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:title="@string/reload">
+    </item>
+    <item
         android:id="@+id/logoutMenu"
         app:showAsAction="always"
         android:icon="@drawable/log_out"

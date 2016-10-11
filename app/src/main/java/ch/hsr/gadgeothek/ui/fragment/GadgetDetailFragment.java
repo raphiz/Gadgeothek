@@ -4,21 +4,28 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.List;
+
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.domain.Gadget;
+import ch.hsr.gadgeothek.domain.Loan;
+import ch.hsr.gadgeothek.service.Callback;
+import ch.hsr.gadgeothek.service.LibraryService;
 import ch.hsr.gadgeothek.ui.GadgetDetailCallback;
 
 
 public class GadgetDetailFragment extends Fragment {
 
     private Gadget gadget;
+
 
     private GadgetDetailCallback gadgetDetailCallback;
 
@@ -55,7 +62,6 @@ public class GadgetDetailFragment extends Fragment {
         TextView priceTextView = (TextView) rootView.findViewById(R.id.gadgetDetailPriceTextView);
 
         Button reserveButton = (Button) rootView.findViewById(R.id.gadgetDetailReserveBtn);
-//        Button delReservationButton = (Button) rootView.findViewById(R.id.gadgetDetailDelReserveBtn);
 
         nameTextView.setText(gadget.getName());
         manufacturerTextView.setText(gadget.getManufacturer());
@@ -63,17 +69,8 @@ public class GadgetDetailFragment extends Fragment {
         priceTextView.setText(String.valueOf(gadget.getPrice()));
 
 
-        
         //TODO: Check if there is a reservation
-        // TODO: Change button label AND functiondepending on reservation
-
-        reserveButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                gadgetDetailCallback.onReserveButtonClicked(gadget);
-            }
-        });
+        // TODO: Change button label AND function depending on reservation
 
 //        delReservationButton.setOnClickListener(new View.OnClickListener() {
 //
