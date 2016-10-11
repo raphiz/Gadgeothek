@@ -5,7 +5,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,44 +22,29 @@ import ch.hsr.gadgeothek.ui.fragment.GadgetListFragment;
 public class MainActivity extends AppCompatActivity implements GadgetListCallback {
 
 
-    private TabLayout tabs;
-    private ViewPager pager;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Your Mama!");
-
-        tabs = (TabLayout)findViewById(R.id.main_tabs);
-        pager = (ViewPager) findViewById(R.id.main_pager);
 
         // Set the toolbar to the same level as the action bar
         // looks ugly otherwise
         getSupportActionBar().setElevation(0f);
 
-        // Coloring tabs
-        tabs.setTabTextColors(ContextCompat.getColor(this, android.R.color.white),
-                ContextCompat.getColor(this, R.color.colorAccent));
-        tabs.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
-
+        // Setup Tabs
+        TabLayout tabs = (TabLayout)findViewById(R.id.main_tabs);
+        ViewPager pager = (ViewPager) findViewById(R.id.main_pager);
         CustomAdapter adapter = new CustomAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
-
-
         tabs.setupWithViewPager(pager);
     }
 
-    // Menu icons are inflated just as they were with actionbar
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }

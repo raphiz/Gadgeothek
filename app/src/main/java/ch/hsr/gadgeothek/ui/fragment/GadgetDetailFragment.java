@@ -55,14 +55,17 @@ public class GadgetDetailFragment extends Fragment {
         TextView priceTextView = (TextView) rootView.findViewById(R.id.gadgetDetailPriceTextView);
 
         Button reserveButton = (Button) rootView.findViewById(R.id.gadgetDetailReserveBtn);
-        Button delReservationButton = (Button) rootView.findViewById(R.id.gadgetDetailDelReserveBtn);
+//        Button delReservationButton = (Button) rootView.findViewById(R.id.gadgetDetailDelReserveBtn);
 
         nameTextView.setText(gadget.getName());
         manufacturerTextView.setText(gadget.getManufacturer());
         conditionTextView.setText(gadget.getCondition().toString());
         priceTextView.setText(String.valueOf(gadget.getPrice()));
 
+
+        
         //TODO: Check if there is a reservation
+        // TODO: Change button label AND functiondepending on reservation
 
         reserveButton.setOnClickListener(new View.OnClickListener() {
 
@@ -72,13 +75,13 @@ public class GadgetDetailFragment extends Fragment {
             }
         });
 
-        delReservationButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                gadgetDetailCallback.onReserveDeleteButtonClicked(gadget);
-            }
-        });
+//        delReservationButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                gadgetDetailCallback.onReserveDeleteButtonClicked(gadget);
+//            }
+//        });
 
         return rootView;
     }

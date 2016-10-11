@@ -16,4 +16,6 @@
     <string name="price">Price</string>
     <string name="delete_reservation">Delete reservation</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="logout">Logout</string>
+    <string name="manufacturer">Manufacturer</string>
 </resources>

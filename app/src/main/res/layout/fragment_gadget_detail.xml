@@ -18,13 +18,24 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gadgetDetailManufacturerLabel"
+        android:text="@string/manufacturer"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/gadgetDetailNameTextView"
+        android:layout_alignParentStart="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/gadgetDetailManufacturerTextView"
-        tools:text="Manufacturer"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/gadgetDetailNameTextView"
+        tools:text="condition"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/gadgetDetailManufacturerLabel"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -32,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/gadgetDetailConditionLabel"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/gadgetDetailManufacturerTextView"
         android:layout_alignParentStart="true" />
 
@@ -65,24 +76,14 @@
         android:layout_below="@+id/gadgetDetailPriceLabel"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:text="@string/reserve"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/gadgetDetailReserveBtn"
-        android:layout_below="@+id/gadgetDetailPriceTextView"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="79dp"
-        tools:text="Reservieren" />
 
     <Button
-        android:text="@string/delete_reservation"
-        android:layout_width="wrap_content"
+        android:text="@string/reserve"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/gadgetDetailDelReserveBtn"
-        android:layout_below="@+id/gadgetDetailReserveBtn"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
-        tools:text="Reservierung löschen" />
+        android:id="@+id/gadgetDetailReserveBtn"
+        android:layout_marginBottom="34dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
