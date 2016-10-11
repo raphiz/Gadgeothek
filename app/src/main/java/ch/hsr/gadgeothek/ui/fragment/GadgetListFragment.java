@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -62,7 +63,6 @@ public class GadgetListFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_gadget_list, container, false);
         gadgetListView = (ListView) rootView.findViewById(R.id.gadgedListView);
-
         gadgetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -71,7 +71,7 @@ public class GadgetListFragment extends Fragment {
             }
         });
 
-
+        gadgetListView.setAdapter(new GadgetItemAdapter(gadgetList));
         populateListView();
 
         return rootView;
@@ -83,7 +83,7 @@ public class GadgetListFragment extends Fragment {
                 @Override
                 public void onCompletion(List<Gadget> input) {
                     gadgetList.addAll(input);
-                    gadgetListView.setAdapter(new GadgetItemAdapter(gadgetList));
+                    ((GadgetItemAdapter)gadgetListView.getAdapter()).notifyDataSetChanged();
                 }
 
                 @Override
