@@ -22,4 +22,8 @@
     <string name="gadgets">Gadgets</string>
     <string name="loans">Loans</string>
     <string name="reservations">Reservations</string>
+    <string name="error_invalid_input">please provide a valid input</string>
+    <string name="error_empty_input">please provide an input</string>
+    <string name="error_login">Wrong username or password. Please check your library url too!</string>
+    <string name="error_signup">An error occured during signup. Please try again later.</string>
 </resources>
