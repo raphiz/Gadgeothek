@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onCompletion(Boolean input) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
+                        finish();
                     }
 
                     @Override
