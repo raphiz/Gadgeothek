@@ -2,6 +2,7 @@ package ch.hsr.gadgeothek.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
+import ch.hsr.gadgeothek.constant.Tab;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.domain.Loan;
 import ch.hsr.gadgeothek.domain.Reservation;
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         // Setup Tabs
         TabLayout tabs = (TabLayout) findViewById(R.id.main_tabs);
         ViewPager pager = (ViewPager) findViewById(R.id.main_pager);
-        CustomAdapter adapter = new CustomAdapter(getSupportFragmentManager());
+        TabAdapter adapter = new TabAdapter(getResources(), getSupportFragmentManager());
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
 
@@ -164,27 +166,38 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         startActivity(fragmentIntent);
     }
 
-    public static class CustomAdapter extends FragmentPagerAdapter {
+    public static class TabAdapter extends FragmentPagerAdapter {
 
-        public CustomAdapter (FragmentManager manager){
+        private final Resources resources;
+
+        public TabAdapter(Resources resources, FragmentManager manager){
             super(manager);
+            this.resources = resources;
         }
 
         @Override
         public Fragment getItem(int position) {
             // TODO: Pass List of Gadgets to fragment
-            return GadgetListFragment.getInstance(Constant.pageTitles[position], new ArrayList<Gadget>());
+            return GadgetListFragment.getInstance(Tab.values()[position], new ArrayList<Gadget>());
         }
 
         @Override
         public int getCount() {
-            return Constant.pageTitles.length;
+            return Tab.values().length;
         }
 
         @Override
         public CharSequence getPageTitle(int position){
-            // TODO: Localize!
-            return Constant.pageTitles[position];
+            switch(Tab.values()[position]){
+                case GADGETS:
+                    return resources.getString(R.string.gadgets);
+                case RESERVATIONS:
+                    return resources.getString(R.string.reservations);
+                case LOANS:
+                    return resources.getString(R.string.loans);
+                default:
+                    return "?";
+            }
         }
     }
 

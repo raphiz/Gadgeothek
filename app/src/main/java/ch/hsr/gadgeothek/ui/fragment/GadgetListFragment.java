@@ -19,6 +19,7 @@ import java.util.List;
 
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
+import ch.hsr.gadgeothek.constant.Tab;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.service.Callback;
 import ch.hsr.gadgeothek.service.LibraryService;
@@ -39,10 +40,10 @@ public class GadgetListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static GadgetListFragment getInstance(String pagetTitle, ArrayList<Gadget> gadgetList) {
+    public static GadgetListFragment getInstance(Tab pagetTitle, ArrayList<Gadget> gadgetList) {
         GadgetListFragment fragment = new GadgetListFragment();
         Bundle args = new Bundle();
-        args.putString(Constant.PAGE_TITLE, pagetTitle);
+        args.putString(Constant.PAGE_TITLE, pagetTitle.name());
         args.putSerializable(Constant.GADGET_LIST, gadgetList);
         fragment.setArguments(args);
         return fragment;

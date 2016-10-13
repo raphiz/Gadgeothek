@@ -6,8 +6,6 @@ package ch.hsr.gadgeothek.constant;
 
 public final class Constant {
     public static final String INTENT_PASSWORD = "intent_password";
-    // TODO: delete when implementing properly!
-    public static final String[] pageTitles = {"Gadgets", "Ausleihen", "Reservationen"};
     public static final String GADGET = "GADGET";
     public static final String GADGET_LIST = "GADGET_LIST";
     public static final String PAGE_TITLE = "PAGE_TITLE";

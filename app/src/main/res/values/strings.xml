@@ -19,4 +19,7 @@
     <string name="logout">Logout</string>
     <string name="manufacturer">Manufacturer</string>
     <string name="reload">reload</string>
+    <string name="gadgets">Gadgets</string>
+    <string name="loans">Loans</string>
+    <string name="reservations">Reservations</string>
 </resources>
