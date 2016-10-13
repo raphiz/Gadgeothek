@@ -41,7 +41,7 @@ public class SignupActivity extends BaseLoginSignupActivity {
                             public void onError(String message) {
                                 showOverallErrorMsg(R.id.activity_login, getString(R.string.error_login));
                             }
-                        }));
+                        });
             }
         });
 
