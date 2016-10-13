@@ -155,7 +155,12 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         // TODO: Distinguish between phone and tablet
         Log.d("LOG", "You clicked on: " + gadget.getName());
         Intent fragmentIntent = new Intent(this, GadgetDetailActivity.class);
+        Reservation reservation = null;
+        Loan load = null;
         fragmentIntent.putExtra(Constant.GADGET, gadget);
+        fragmentIntent.putExtra(Constant.RESERVATION, reservation);
+        fragmentIntent.putExtra(Constant.LOAN, load);
+
         startActivity(fragmentIntent);
     }
 
@@ -181,4 +186,6 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
             // TODO: Localize!
             return Constant.pageTitles[position];
         }
-    }}
+    }
+
+}

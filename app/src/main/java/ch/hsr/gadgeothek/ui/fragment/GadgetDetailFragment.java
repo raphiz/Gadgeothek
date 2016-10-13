@@ -17,6 +17,7 @@ import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.domain.Loan;
+import ch.hsr.gadgeothek.domain.Reservation;
 import ch.hsr.gadgeothek.service.Callback;
 import ch.hsr.gadgeothek.service.LibraryService;
 import ch.hsr.gadgeothek.ui.GadgetDetailCallback;
@@ -25,6 +26,8 @@ import ch.hsr.gadgeothek.ui.GadgetDetailCallback;
 public class GadgetDetailFragment extends Fragment {
 
     private Gadget gadget;
+    private Reservation reservation;
+    private Loan loan;
 
 
     private GadgetDetailCallback gadgetDetailCallback;
@@ -34,10 +37,12 @@ public class GadgetDetailFragment extends Fragment {
     }
 
 
-    public static GadgetDetailFragment newInstance(Gadget gadget) {
+    public static GadgetDetailFragment newInstance(Gadget gadget, Loan loan, Reservation reservation) {
         GadgetDetailFragment fragment = new GadgetDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable(Constant.GADGET, gadget);
+        args.putSerializable(Constant.RESERVATION, reservation);
+        args.putSerializable(Constant.LOAN, loan);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,6 +52,8 @@ public class GadgetDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             gadget = (Gadget) getArguments().getSerializable(Constant.GADGET);
+            loan = (Loan) getArguments().getSerializable(Constant.LOAN);
+            reservation = (Reservation) getArguments().getSerializable(Constant.RESERVATION);
         }
     }
 
@@ -62,6 +69,15 @@ public class GadgetDetailFragment extends Fragment {
         TextView priceTextView = (TextView) rootView.findViewById(R.id.gadgetDetailPriceTextView);
 
         Button reserveButton = (Button) rootView.findViewById(R.id.gadgetDetailReserveBtn);
+        reserveButton.setVisibility(View.VISIBLE);
+        if (loan != null) {
+            reserveButton.setVisibility(View.GONE);
+        } else if (reservation != null) {
+            reserveButton.setText(R.string.delete_reservation);
+        }else{
+            reserveButton.setText(R.string.reserve);
+        }
+
 
         nameTextView.setText(gadget.getName());
         manufacturerTextView.setText(gadget.getManufacturer());
