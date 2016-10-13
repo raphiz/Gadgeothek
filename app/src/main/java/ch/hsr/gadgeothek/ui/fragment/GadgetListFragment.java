@@ -2,8 +2,10 @@ package ch.hsr.gadgeothek.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +65,20 @@ public class GadgetListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_gadget_list, container, false);
-        gadgetListView = (ListView) rootView.findViewById(R.id.gadgedListView);
+
+        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh_layout);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                                             @Override
+                                             public void onRefresh() {
+                                                 new Handler().postDelayed(new Runnable() {
+                                                     @Override public void run() {
+                                                         swipeLayout.setRefreshing(false);
+                                                     }
+                                                 }, 5000);
+                                             }
+                                         });
+
+                gadgetListView = (ListView) rootView.findViewById(R.id.gadgedListView);
         gadgetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
