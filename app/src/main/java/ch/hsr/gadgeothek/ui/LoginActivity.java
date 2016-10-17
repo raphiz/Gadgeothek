@@ -2,7 +2,6 @@ package ch.hsr.gadgeothek.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -23,6 +22,8 @@ public class LoginActivity extends BaseLoginSignupActivity {
 
         if (LibraryService.isLoggedIn() ) {
             startMainActivity(LoginActivity.this);
+            finish();
+            return;
         }
 
         final EditText emailAddressEditText = (EditText) findViewById(R.id.emailAddressEditText);
@@ -56,24 +57,6 @@ public class LoginActivity extends BaseLoginSignupActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (!LibraryService.keepMeLoggedIn()) {
-            LibraryService.logout(new Callback<Boolean>() {
-                @Override
-                public void onCompletion(Boolean input) {
-                    Log.d("logout", "logout completed");
-                }
-
-                @Override
-                public void onError(String message) {
-                    Log.d("logout", "error during logout: " + message);
-                }
-            });
-        }
     }
 
 }

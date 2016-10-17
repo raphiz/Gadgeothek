@@ -3,6 +3,7 @@ package ch.hsr.gadgeothek.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.gadgeothek.R;
@@ -203,6 +202,24 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         //loadData(); // raises exception "not logged in"
         // TODO: Call onDataRefreshed() on fragment once loading is completed
         fragment.onDataRefreshed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (!LibraryService.keepMeLoggedIn()) {
+            LibraryService.logout(new Callback<Boolean>() {
+                @Override
+                public void onCompletion(Boolean input) {
+                    Log.d("logout", "logout completed");
+                }
+
+                @Override
+                public void onError(String message) {
+                    Log.d("logout", "error during logout: " + message);
+                }
+            });
+        }
     }
 
     public static class TabAdapter extends FragmentPagerAdapter {
