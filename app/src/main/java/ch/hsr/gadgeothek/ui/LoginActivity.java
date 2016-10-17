@@ -22,7 +22,6 @@ public class LoginActivity extends BaseLoginSignupActivity {
 
         if (LibraryService.isLoggedIn() ) {
             startMainActivity(LoginActivity.this);
-            finish();
             return;
         }
 
@@ -37,7 +36,6 @@ public class LoginActivity extends BaseLoginSignupActivity {
                     @Override
                     public void onCompletion(Boolean input) {
                         startMainActivity(LoginActivity.this);
-                        finish();
                     }
 
                     @Override

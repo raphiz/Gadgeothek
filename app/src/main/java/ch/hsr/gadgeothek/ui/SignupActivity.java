@@ -34,7 +34,6 @@ public class SignupActivity extends BaseLoginSignupActivity {
                             @Override
                             public void onCompletion(Boolean input) {
                                 startMainActivity(SignupActivity.this);
-                                finish();
                             }
 
                             @Override
