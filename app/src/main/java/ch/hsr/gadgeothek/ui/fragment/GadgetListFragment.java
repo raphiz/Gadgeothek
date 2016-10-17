@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -78,7 +77,7 @@ public class GadgetListFragment extends Fragment {
                                              }
                                          });
 
-                gadgetListView = (ListView) rootView.findViewById(R.id.gadgedListView);
+        gadgetListView = (ListView) rootView.findViewById(R.id.gadgedListView);
         gadgetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -87,6 +86,9 @@ public class GadgetListFragment extends Fragment {
             }
         });
 
+        View emptyLayout = inflater.inflate(R.layout.gadgetview_empty_reservations, null);
+        // TODO: Empty View doesn't work yet
+        gadgetListView.setEmptyView(emptyLayout);
         gadgetListView.setAdapter(new GadgetItemAdapter(gadgetList));
         populateListView();
 
@@ -171,6 +173,11 @@ public class GadgetListFragment extends Fragment {
         @Override
         public int getCount() {
             return gadgetList.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return gadgetList.isEmpty();
         }
     }
 }
