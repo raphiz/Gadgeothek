@@ -4,26 +4,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.constant.Tab;
 import ch.hsr.gadgeothek.domain.Gadget;
-import ch.hsr.gadgeothek.service.Callback;
-import ch.hsr.gadgeothek.service.LibraryService;
 import ch.hsr.gadgeothek.ui.GadgetListCallback;
 
 
@@ -87,29 +79,9 @@ public class GadgetListFragment extends Fragment {
         gadgetListView.setEmptyView(emptyLayout);
 
         gadgetListView.setAdapter(gadgetListCallback.getAdapter(pageTitle));
-        //populateListView();
 
         return rootView;
     }
-
-    /*private void populateListView() {
-        if (gadgetList.isEmpty()) {
-            LibraryService.getGadgets(new Callback<List<Gadget>>() {
-                @Override
-                public void onCompletion(List<Gadget> input) {
-                    gadgetList.addAll(input);
-                    gadgetListView.getAdapter().notifyDataSetChanged();
-                }
-
-                @Override
-                public void onError(String message) {
-                    //TODO error handling
-                    Log.e("load gadgets", "error during loading gadgets: " + message);
-                }
-            });
-        }
-
-    }*/
 
     @Override
     public void onAttach(Context activity) {
