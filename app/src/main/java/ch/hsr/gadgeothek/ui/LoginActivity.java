@@ -61,7 +61,7 @@ public class LoginActivity extends BaseLoginSignupActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (LibraryService.keepMeLoggedIn()) {
+        if (!LibraryService.keepMeLoggedIn()) {
             LibraryService.logout(new Callback<Boolean>() {
                 @Override
                 public void onCompletion(Boolean input) {
