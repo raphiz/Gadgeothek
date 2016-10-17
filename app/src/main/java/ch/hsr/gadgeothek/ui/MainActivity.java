@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
 
     @Override
     public void onGadgetListRefresh(GadgetListFragment fragment) {
-        //loadData(); // raises exception "not logged in"
+        loadData();
         // TODO: Call onDataRefreshed() on fragment once loading is completed
         fragment.onDataRefreshed();
     }
