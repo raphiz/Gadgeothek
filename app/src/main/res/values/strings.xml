@@ -26,6 +26,6 @@
     <string name="error_empty_input">please provide an input</string>
     <string name="error_login">Wrong username or password. Please check your library url too!</string>
     <string name="error_signup">An error occured during signup. Please try again later.</string>
-    <string name="empty_reservations_title" />
+    <string name="empty_reservations_title">No Reservations</string>
     <string name="empty_reservations_hint">Click on a gadget in the Gadgets Tab to add a reservation</string>
 </resources>

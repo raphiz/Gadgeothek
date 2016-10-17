@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     private List<Loan> loans;
     private List<Reservation> reservations;
     private List<Gadget> gadgets;
+    private GadgetItemAdapter gadgetAdapter;
+    private GadgetItemAdapter reservationsAdapter;
+    private GadgetItemAdapter loansAdapter;
     private Snackbar snackbar;
     private ProgressDialog loadingDialog;
 
@@ -53,6 +57,13 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         // looks ugly otherwise
         getSupportActionBar().setElevation(0f);
 
+        // Setup ListView Adapters
+        this.gadgetAdapter = new GadgetItemAdapter(this);
+        this.reservationsAdapter = new GadgetItemAdapter(this);
+        this.loansAdapter = new GadgetItemAdapter(this);
+
+        loadData();
+
         // Setup Tabs
         TabLayout tabs = (TabLayout) findViewById(R.id.main_tabs);
         ViewPager pager = (ViewPager) findViewById(R.id.main_pager);
@@ -60,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
 
-        loadData();
     }
 
     @Override
@@ -89,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
             @Override
             public void onCompletion(List<Loan> input) {
                 loans = input;
+                // TODO: Filter and update data
                 if (reservations != null && gadgets != null){
                     loadingDialog.hide();
                 }
@@ -105,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
             @Override
             public void onCompletion(List<Reservation> input) {
                 reservations = input;
+                // TODO: Filter and update data
                 if (loans != null && gadgets != null){
                     loadingDialog.hide();
                 }
@@ -119,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
             @Override
             public void onCompletion(List<Gadget> input) {
                 gadgets = input;
+                updateAdapterData(gadgetAdapter, gadgets);
                 if (reservations != null && loans != null){
                     loadingDialog.hide();
                 }
@@ -152,6 +165,11 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         snackbar.show();
     }
 
+    private void updateAdapterData(GadgetItemAdapter adapter, List<Gadget> gadgetList) {
+        adapter.setGadgetList(gadgetList);
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onGadgetClicked(Gadget gadget) {
         // TODO: Distinguish between phone and tablet
@@ -166,6 +184,21 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         startActivity(fragmentIntent);
     }
 
+    @Override
+    public ArrayAdapter<Gadget> getAdapter(Tab tab) {
+        // TODO: Filter gadget and pass correct list
+         switch (tab) {
+            case GADGETS:
+                return gadgetAdapter;
+            case RESERVATIONS:
+                return reservationsAdapter;
+            case LOANS:
+                return loansAdapter;
+            default:
+                return null;
+        }
+    }
+
     public static class TabAdapter extends FragmentPagerAdapter {
 
         private final Resources resources;
@@ -178,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         @Override
         public Fragment getItem(int position) {
             // TODO: Pass List of Gadgets to fragment
-            return GadgetListFragment.getInstance(Tab.values()[position], new ArrayList<Gadget>());
+            return GadgetListFragment.getInstance(Tab.values()[position]);
         }
 
         @Override

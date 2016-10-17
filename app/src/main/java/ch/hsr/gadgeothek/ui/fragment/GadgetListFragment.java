@@ -29,11 +29,9 @@ import ch.hsr.gadgeothek.ui.GadgetListCallback;
 
 public class GadgetListFragment extends Fragment {
 
-    private String pageTitle;
+    private Tab pageTitle;
 
     private ListView gadgetListView;
-
-    private List<Gadget> gadgetList;
 
     private GadgetListCallback gadgetListCallback;
 
@@ -41,11 +39,10 @@ public class GadgetListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static GadgetListFragment getInstance(Tab pagetTitle, ArrayList<Gadget> gadgetList) {
+    public static GadgetListFragment getInstance(Tab pagetTitle) {
         GadgetListFragment fragment = new GadgetListFragment();
         Bundle args = new Bundle();
         args.putString(Constant.PAGE_TITLE, pagetTitle.name());
-        args.putSerializable(Constant.GADGET_LIST, gadgetList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,8 +51,7 @@ public class GadgetListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            pageTitle = getArguments().getString(Constant.PAGE_TITLE);
-            gadgetList = (List<Gadget>) getArguments().getSerializable(Constant.GADGET_LIST);
+            pageTitle = Tab.valueOf(getArguments().getString(Constant.PAGE_TITLE));
         }
     }
 
@@ -89,19 +85,20 @@ public class GadgetListFragment extends Fragment {
         View emptyLayout = inflater.inflate(R.layout.gadgetview_empty_reservations, null);
         // TODO: Empty View doesn't work yet
         gadgetListView.setEmptyView(emptyLayout);
-        gadgetListView.setAdapter(new GadgetItemAdapter(gadgetList));
-        populateListView();
+
+        gadgetListView.setAdapter(gadgetListCallback.getAdapter(pageTitle));
+        //populateListView();
 
         return rootView;
     }
 
-    private void populateListView() {
+    /*private void populateListView() {
         if (gadgetList.isEmpty()) {
             LibraryService.getGadgets(new Callback<List<Gadget>>() {
                 @Override
                 public void onCompletion(List<Gadget> input) {
                     gadgetList.addAll(input);
-                    ((GadgetItemAdapter)gadgetListView.getAdapter()).notifyDataSetChanged();
+                    gadgetListView.getAdapter().notifyDataSetChanged();
                 }
 
                 @Override
@@ -112,7 +109,7 @@ public class GadgetListFragment extends Fragment {
             });
         }
 
-    }
+    }*/
 
     @Override
     public void onAttach(Context activity) {
@@ -128,56 +125,6 @@ public class GadgetListFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        gadgetList = null;
         gadgetListCallback = null;
-    }
-
-    public class GadgetItemAdapter extends ArrayAdapter<Gadget> {
-        private List<Gadget> gadgetList;
-
-        public GadgetItemAdapter(List<Gadget> gadgetList) {
-            super(getActivity(), R.layout.gadgetview_item);
-            this.gadgetList = gadgetList;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final Gadget gadget = gadgetList.get(position);
-            if (convertView == null) {
-                LayoutInflater layoutInflater =
-                        (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = layoutInflater.inflate(R.layout.gadgetview_item, null);
-
-                TextView gadgetNameView = (TextView) convertView.findViewById(R.id.textViewGadgetName);
-                TextView manufacturerView = (TextView) convertView.findViewById(R.id.textViewManufacturer);
-
-                Pair<TextView, TextView> views = new Pair<>(gadgetNameView, manufacturerView);
-                convertView.setTag(views);
-            }
-
-            Pair<TextView, TextView> views = (Pair<TextView, TextView>)  convertView.getTag();
-            TextView gadgetNameView = views.first;
-            TextView manufacturerView = views.second;
-
-            manufacturerView.setText(gadget.getManufacturer());
-            gadgetNameView.setText(gadget.getName());
-
-            return convertView;
-        }
-
-        @Override
-        public Gadget getItem(int position) {
-            return gadgetList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return gadgetList.size();
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return gadgetList.isEmpty();
-        }
     }
 }
