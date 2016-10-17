@@ -186,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
 
     @Override
     public ArrayAdapter<Gadget> getAdapter(Tab tab) {
-        // TODO: Filter gadget and pass correct list
          switch (tab) {
             case GADGETS:
                 return gadgetAdapter;
@@ -197,6 +196,13 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
             default:
                 return null;
         }
+    }
+
+    @Override
+    public void onGadgetListRefresh(GadgetListFragment fragment) {
+        //loadData(); // raises exception "not logged in"
+        // TODO: Call onDataRefreshed() on fragment once loading is completed
+        fragment.onDataRefreshed();
     }
 
     public static class TabAdapter extends FragmentPagerAdapter {

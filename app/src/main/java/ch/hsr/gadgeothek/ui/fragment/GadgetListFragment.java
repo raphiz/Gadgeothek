@@ -19,13 +19,15 @@ import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.ui.GadgetListCallback;
 
 
-public class GadgetListFragment extends Fragment {
+public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private Tab pageTitle;
 
     private ListView gadgetListView;
 
     private GadgetListCallback gadgetListCallback;
+
+    SwipeRefreshLayout swipeLayout;
 
     public GadgetListFragment() {
         // Required empty public constructor
@@ -53,17 +55,8 @@ public class GadgetListFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_gadget_list, container, false);
 
-        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh_layout);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                                             @Override
-                                             public void onRefresh() {
-                                                 new Handler().postDelayed(new Runnable() {
-                                                     @Override public void run() {
-                                                         swipeLayout.setRefreshing(false);
-                                                     }
-                                                 }, 5000);
-                                             }
-                                         });
+        swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh_layout);
+        swipeLayout.setOnRefreshListener(this);
 
         gadgetListView = (ListView) rootView.findViewById(R.id.gadgedListView);
         gadgetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -98,5 +91,15 @@ public class GadgetListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         gadgetListCallback = null;
+    }
+
+    public void onDataRefreshed() {
+        swipeLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onRefresh() {
+        // TODO: Execute in Runnable
+        gadgetListCallback.onGadgetListRefresh(this);
     }
 }
