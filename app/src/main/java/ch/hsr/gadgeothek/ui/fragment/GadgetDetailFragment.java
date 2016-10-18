@@ -1,6 +1,7 @@
 package ch.hsr.gadgeothek.ui.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.List;
+import java.text.DateFormat;
 
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
@@ -65,15 +66,40 @@ public class GadgetDetailFragment extends Fragment implements View.OnClickListen
         TextView manufacturerTextView = (TextView) rootView.findViewById(R.id.gadgetDetailManufacturerTextView);
         TextView conditionTextView = (TextView) rootView.findViewById(R.id.gadgetDetailConditionTextView);
         TextView priceTextView = (TextView) rootView.findViewById(R.id.gadgetDetailPriceTextView);
+        TextView statusTextView = (TextView) rootView.findViewById(R.id.gadgetDetailStatusTextView);
+        TextView waitingTextView = (TextView) rootView.findViewById(R.id.gadgetDetailWaitingStatusTextView);
 
         Button reserveButton = (Button) rootView.findViewById(R.id.gadgetDetailReserveBtn);
         reserveButton.setVisibility(View.VISIBLE);
+        DateFormat dateFormatter = android.text.format.DateFormat.getDateFormat(getActivity());
         if (loan != null) {
             reserveButton.setVisibility(View.GONE);
+            if (loan.isOverdue()) {
+                String overDueText = String.format("{0} {1}", R.string.loan_overdue, dateFormatter.format(loan.overDueDate()));
+                statusTextView.setText(overDueText);
+                statusTextView.setTextColor(Color.RED);
+            } else {
+                String returnUntilText = String.format("{0} {1}", R.string.return_until, dateFormatter.format(loan.overDueDate()));
+                statusTextView.setText(returnUntilText);
+            }
+            String lentSinceText = String.format("{0} {1}", R.string.lent_since, dateFormatter.format(loan.getPickupDate()));
+            waitingTextView.setText(lentSinceText);
         } else if (reservation != null) {
+            if (reservation.isReady()) {
+                statusTextView.setText(R.string.reservation_ready);
+                statusTextView.setTextColor(Color.GREEN);
+                waitingTextView.setVisibility(View.GONE);
+            } else {
+                String reservedAtText =
+                        String.format("{0} {1}", R.string.has_been_reserved_at, dateFormatter.format(reservation.getReservationDate()));
+                statusTextView.setText(reservedAtText);
+                waitingTextView.setText(String.format("{0}: {1}", R.string.waiting_position, reservation.getWatingPosition()));
+            }
             reserveButton.setText(R.string.delete_reservation);
         }else{
             reserveButton.setText(R.string.reserve);
+            statusTextView.setVisibility(View.GONE);
+            waitingTextView.setVisibility(View.GONE);
         }
 
 
@@ -83,8 +109,6 @@ public class GadgetDetailFragment extends Fragment implements View.OnClickListen
         priceTextView.setText(String.valueOf(gadget.getPrice()));
 
 
-        //TODO: Check if there is a reservation
-        // TODO: Change button label AND function depending on reservation
         reserveButton.setOnClickListener(this);
 
         return rootView;

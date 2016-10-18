@@ -17,7 +17,7 @@
         </activity>
         <activity android:name=".ui.SignupActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.MainActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.GadgetDetailActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.GadgetDetailActivity" android:screenOrientation="portrait" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 

@@ -82,8 +82,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/gadgetDetailReserveBtn"
-        android:layout_marginBottom="34dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:id="@+id/gadgetDetailWaitingStatusTextView"
+        tools:text="Waiting position: 2"
+        android:layout_above="@+id/gadgetDetailReserveBtn"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:id="@+id/gadgetDetailStatusTextView"
+        tools:text="Has been reserved at 18.10. 16"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:layout_above="@+id/gadgetDetailWaitingStatusTextView"
         android:layout_alignParentStart="true" />
 
 </RelativeLayout>
