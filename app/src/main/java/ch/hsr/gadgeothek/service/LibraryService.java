@@ -53,7 +53,6 @@ public class LibraryService {
     public static void logout(final SimpleLibraryServiceCallback<Boolean> callback) {
         HashMap<String, String> parameter = new HashMap<>();
         parameter.put("token", getTokenAsString());
-
         Request<Boolean> request = new Request<>(HttpVerb.POST, serverUrl + "/logout", Boolean.class, parameter, new SimpleLibraryServiceCallback<Boolean>() {
             @Override
             public void onCompletion(Boolean input) {

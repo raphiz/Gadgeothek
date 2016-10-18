@@ -28,4 +28,5 @@
     <string name="error_signup">An error occured during signup. Please try again later.</string>
     <string name="empty_reservations_title">No Reservations</string>
     <string name="empty_reservations_hint">Click on a gadget in the Gadgets Tab to add a reservation</string>
+    <string name="logout_failed">Logout has failed 😭</string>
 </resources>

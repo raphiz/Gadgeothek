@@ -1,11 +1,13 @@
 package ch.hsr.gadgeothek.ui;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DialogTitle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -93,6 +95,19 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logoutMenu:
+                LibraryService.logout(new SimpleLibraryServiceCallback<Boolean>() {
+                    @Override
+                    public void onCompletion(Boolean input) {
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        MainActivity.this.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        Snackbar.make(findViewById(R.id.activity_main), getResources().getString(R.string.logout_failed), Snackbar.LENGTH_LONG).show();
+                    }
+                });
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -203,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (!LibraryService.keepMeLoggedIn()) {
+        if (!LibraryService.keepMeLoggedIn() && LibraryService.isLoggedIn()) {
             LibraryService.logout(new SimpleLibraryServiceCallback<Boolean>() {
                 @Override
                 public void onCompletion(Boolean input) {
@@ -217,6 +232,4 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
             });
         }
     }
-
-
 }

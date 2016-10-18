@@ -77,7 +77,7 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
     }
 
     protected void showOverallErrorMsg(int viewId, String errorMsg) {
-        Snackbar.make(findViewById(viewId), errorMsg, Snackbar.LENGTH_SHORT).show();                ;
+        Snackbar.make(findViewById(viewId), errorMsg, Snackbar.LENGTH_SHORT).show();
     }
 
     protected void startMainActivity(Context context) {
