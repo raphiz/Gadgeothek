@@ -8,8 +8,8 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import ch.hsr.gadgeothek.R;
-import ch.hsr.gadgeothek.service.Callback;
 import ch.hsr.gadgeothek.service.LibraryService;
+import ch.hsr.gadgeothek.service.SimpleLibraryServiceCallback;
 import ch.hsr.gadgeothek.util.InputValidator;
 
 public abstract class BaseLoginSignupActivity extends AppCompatActivity {
@@ -18,7 +18,7 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
                            final EditText passwordEditText,
                            final Switch keepMeLoggedInSwitch,
                            final Context context,
-                           final Callback loginCallback) {
+                           final SimpleLibraryServiceCallback loginCallback) {
 
         boolean hasInvalidFields = InputValidator.checkForEmptyFieldsAndSetErrorMsgs(
                 context, passwordEditText);
@@ -41,7 +41,7 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
                             final EditText passwordEditText,
                             final Switch keepMeLoggedInSwitch,
                             final Context context,
-                            final Callback loginCallback) {
+                            final SimpleLibraryServiceCallback loginCallback) {
 
         boolean hasInvalidFields = InputValidator.checkForEmptyFieldsAndSetErrorMsgs(
                 context,
@@ -61,7 +61,7 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
         final String password = passwordEditText.getText().toString();
         final boolean keepMeLoggedIn = keepMeLoggedInSwitch.isChecked();
 
-        LibraryService.register(emailAddress, password, name, studentNumber, new Callback<Boolean>() {
+        LibraryService.register(emailAddress, password, name, studentNumber, new SimpleLibraryServiceCallback<Boolean>() {
 
             @Override
             public void onCompletion(Boolean input) {

@@ -21,9 +21,9 @@ class Request<T> extends AsyncTask<Void, Void, Pair<String, T>> {
     private final String url;
     private final Type resultType;
     private HashMap<String, String> parameterList;
-    private Callback<T> callback;
+    private SimpleLibraryServiceCallback<T> callback;
 
-    public Request(HttpVerb type, String url, Type typeClass, HashMap<String, String> parameterList, Callback<T> callback) {
+    public Request(HttpVerb type, String url, Type typeClass, HashMap<String, String> parameterList, SimpleLibraryServiceCallback<T> callback) {
         this.requestKind = type;
         this.url = url;
         this.resultType = typeClass;

@@ -1,14 +1,9 @@
 package ch.hsr.gadgeothek.ui;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.gadgeothek.R;
@@ -26,8 +22,9 @@ import ch.hsr.gadgeothek.constant.Tab;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.domain.Loan;
 import ch.hsr.gadgeothek.domain.Reservation;
-import ch.hsr.gadgeothek.service.Callback;
+import ch.hsr.gadgeothek.service.LibraryServiceCallback;
 import ch.hsr.gadgeothek.service.LibraryService;
+import ch.hsr.gadgeothek.service.SimpleLibraryServiceCallback;
 import ch.hsr.gadgeothek.ui.fragment.GadgetListFragment;
 
 public class MainActivity extends AppCompatActivity implements GadgetListCallback {
@@ -37,11 +34,16 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     private List<Loan> loans;
     private List<Reservation> reservations;
     private List<Gadget> gadgets;
+
     private GadgetItemAdapter gadgetAdapter;
     private GadgetItemAdapter reservationsAdapter;
     private GadgetItemAdapter loansAdapter;
+
+    private GadgetListFragment gadgetsFragment;
+    private GadgetListFragment reservationsFragment;
+    private GadgetListFragment loansFragment;
+
     private Snackbar snackbar;
-    private ProgressDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +63,23 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         this.reservationsAdapter = new GadgetItemAdapter(this);
         this.loansAdapter = new GadgetItemAdapter(this);
 
-        loadData();
-
         // Setup Tabs
         TabLayout tabs = (TabLayout) findViewById(R.id.main_tabs);
         ViewPager pager = (ViewPager) findViewById(R.id.main_pager);
-        TabAdapter adapter = new TabAdapter(getResources(), getSupportFragmentManager());
+        TabAdapter adapter = new TabAdapter(getSupportFragmentManager());
+
+        // Setup & add fragments
+        gadgetsFragment = GadgetListFragment.getInstance(Tab.GADGETS);
+        loansFragment = GadgetListFragment.getInstance(Tab.LOANS);
+        reservationsFragment = GadgetListFragment.getInstance(Tab.RESERVATIONS);
+
+        adapter.addFragment(gadgetsFragment, getResources().getString(R.string.gadgets));
+        adapter.addFragment(loansFragment, getResources().getString(R.string.loans));
+        adapter.addFragment(reservationsFragment, getResources().getString(R.string.reservations));
+
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
+        loadData();
 
     }
 
@@ -81,9 +92,6 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.refreshMenu:
-                loadData();
-                return true;
             case R.id.logoutMenu:
                 return true;
             default:
@@ -92,93 +100,83 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     }
 
     private void loadData() {
-        failed = false;
-        loadingDialog = ProgressDialog.show(this, "Loading Gadgets", "Wait a sec...");
-        LibraryService.getLoansForCustomer(new Callback<List<Loan>>() {
+        LibraryService.load(new LibraryServiceCallback() {
+
+
             @Override
-            public void onCompletion(List<Loan> input) {
-                loans = input;
-                // TODO: Filter and update data
-                if (reservations != null && gadgets != null){
-                    loadingDialog.hide();
+            public void onCompletion(List<Gadget> loadedGadgets, List<Loan> loadedLoans, List<Reservation> loadedReservations) {
+                gadgets = loadedGadgets;
+                loans = loadedLoans;
+                reservations = loadedReservations;
+
+                gadgetAdapter.setGadgetList(gadgets);
+                gadgetAdapter.notifyDataSetChanged();
+
+                List<Gadget> loanedGadgets = new ArrayList<Gadget>();
+                for (Loan loan : loans){loanedGadgets.add(loan.getGadget());}
+                loansAdapter.setGadgetList(loanedGadgets);
+                loansAdapter.notifyDataSetChanged();
+
+                List<Gadget> reservedGadgets = new ArrayList<Gadget>();
+                for (Loan loan : loans){reservedGadgets .add(loan.getGadget());}
+                reservationsAdapter.setGadgetList(reservedGadgets );
+                reservationsAdapter.notifyDataSetChanged();
+
+                gadgetsFragment.onDataRefreshed();
+                loansFragment.onDataRefreshed();
+                reservationsFragment.onDataRefreshed();
+
+                // Hide Snackbar if visible
+                if(snackbar != null && snackbar.isShown()){
+                    snackbar.dismiss();;
                 }
+
+
             }
 
             @Override
             public void onError(String message) {
-                handleDataLoadingError(message);
-            }
 
+                snackbar = Snackbar
+                        .make(findViewById(R.id.activity_main), "Failed to load data..", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("RETRY", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                snackbar.dismiss();
+                                loadData();
+                            }
+                        });
 
-        });
-        LibraryService.getReservationsForCustomer(new Callback<List<Reservation>>() {
-            @Override
-            public void onCompletion(List<Reservation> input) {
-                reservations = input;
-                // TODO: Filter and update data
-                if (loans != null && gadgets != null){
-                    loadingDialog.hide();
-                }
-            }
-
-            @Override
-            public void onError(String message) {
-                handleDataLoadingError(message);
+                snackbar.show();
             }
         });
-        LibraryService.getGadgets(new Callback<List<Gadget>>() {
-            @Override
-            public void onCompletion(List<Gadget> input) {
-                gadgets = input;
-                updateAdapterData(gadgetAdapter, gadgets);
-                if (reservations != null && loans != null){
-                    loadingDialog.hide();
-                }
-            }
-
-            @Override
-            public void onError(String message) {
-                handleDataLoadingError(message);
-            }
-        });
-        // TODO: Update all Tabs - when done!
-    }
-
-    private void handleDataLoadingError(String message) {
-        Log.d("LOG", message);
-        if(failed) {
-            return;
-        }
-        failed = true;
-        loadingDialog.hide();
-        snackbar = Snackbar
-                .make(findViewById(R.id.activity_main), "Failed to load data..", Snackbar.LENGTH_INDEFINITE)
-                .setAction("RETRY", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        snackbar.dismiss();
-                        loadData();
-                    }
-                });
-
-        snackbar.show();
-    }
-
-    private void updateAdapterData(GadgetItemAdapter adapter, List<Gadget> gadgetList) {
-        adapter.setGadgetList(gadgetList);
-        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onGadgetClicked(Gadget gadget) {
-        // TODO: Distinguish between phone and tablet
-        Log.d("LOG", "You clicked on: " + gadget.getName());
         Intent fragmentIntent = new Intent(this, GadgetDetailActivity.class);
+
+        // Filter for active reservations
         Reservation reservation = null;
-        Loan load = null;
+        for(Reservation current : reservations){
+            if(gadget.equals(current.getGadget()) && !current.getFinished()){
+                reservation = current;
+                break;
+            }
+        }
+
+        // Filter for active loans
+        Loan loan = null;
+        for(Loan current: loans){
+            if(gadget.equals(current.getGadget()) && !current.isLent()){
+                loan = current;
+                break;
+            }
+        }
+
         fragmentIntent.putExtra(Constant.GADGET, gadget);
         fragmentIntent.putExtra(Constant.RESERVATION, reservation);
-        fragmentIntent.putExtra(Constant.LOAN, load);
+        fragmentIntent.putExtra(Constant.LOAN, loan);
 
         startActivity(fragmentIntent);
     }
@@ -200,15 +198,13 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     @Override
     public void onGadgetListRefresh(GadgetListFragment fragment) {
         loadData();
-        // TODO: Call onDataRefreshed() on fragment once loading is completed
-        fragment.onDataRefreshed();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (!LibraryService.keepMeLoggedIn()) {
-            LibraryService.logout(new Callback<Boolean>() {
+            LibraryService.logout(new SimpleLibraryServiceCallback<Boolean>() {
                 @Override
                 public void onCompletion(Boolean input) {
                     Log.d("logout", "logout completed");
@@ -222,39 +218,5 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         }
     }
 
-    public static class TabAdapter extends FragmentPagerAdapter {
-
-        private final Resources resources;
-
-        public TabAdapter(Resources resources, FragmentManager manager){
-            super(manager);
-            this.resources = resources;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // TODO: Pass List of Gadgets to fragment
-            return GadgetListFragment.getInstance(Tab.values()[position]);
-        }
-
-        @Override
-        public int getCount() {
-            return Tab.values().length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position){
-            switch(Tab.values()[position]){
-                case GADGETS:
-                    return resources.getString(R.string.gadgets);
-                case RESERVATIONS:
-                    return resources.getString(R.string.reservations);
-                case LOANS:
-                    return resources.getString(R.string.loans);
-                default:
-                    return "?";
-            }
-        }
-    }
 
 }

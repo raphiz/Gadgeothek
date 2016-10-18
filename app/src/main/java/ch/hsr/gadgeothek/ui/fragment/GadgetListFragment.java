@@ -2,9 +2,9 @@ package ch.hsr.gadgeothek.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,10 @@ import ch.hsr.gadgeothek.ui.GadgetListCallback;
 
 public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private Tab pageTitle;
+    private boolean initialized = false;
+    private boolean loaded = false;
+
+    private Tab tab;
 
     private ListView gadgetListView;
 
@@ -33,10 +36,10 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
         // Required empty public constructor
     }
 
-    public static GadgetListFragment getInstance(Tab pagetTitle) {
+    public static GadgetListFragment getInstance(Tab tab) {
         GadgetListFragment fragment = new GadgetListFragment();
         Bundle args = new Bundle();
-        args.putString(Constant.PAGE_TITLE, pagetTitle.name());
+        args.putString(Constant.TAB, tab.name());
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,7 +48,7 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            pageTitle = Tab.valueOf(getArguments().getString(Constant.PAGE_TITLE));
+            tab = Tab.valueOf(getArguments().getString(Constant.TAB));
         }
     }
 
@@ -66,13 +69,16 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
                 gadgetListCallback.onGadgetClicked(clickedGaddget);
             }
         });
-
         View emptyLayout = inflater.inflate(R.layout.gadgetview_empty_reservations, null);
         // TODO: Empty View doesn't work yet
         gadgetListView.setEmptyView(emptyLayout);
 
-        gadgetListView.setAdapter(gadgetListCallback.getAdapter(pageTitle));
+        gadgetListView.setAdapter(gadgetListCallback.getAdapter(tab));
 
+        if(!initialized) {
+            swipeLayout.setRefreshing(!loaded);
+            initialized = true;
+        }
         return rootView;
     }
 
@@ -91,10 +97,14 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
     public void onDetach() {
         super.onDetach();
         gadgetListCallback = null;
+        initialized = false;
     }
 
     public void onDataRefreshed() {
-        swipeLayout.setRefreshing(false);
+        loaded = true;
+        if(initialized){
+            swipeLayout.setRefreshing(false);
+        }
     }
 
     @Override

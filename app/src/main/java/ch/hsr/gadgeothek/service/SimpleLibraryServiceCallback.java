@@ -1,6 +1,6 @@
 package ch.hsr.gadgeothek.service;
 
-public interface Callback<T> {
+public interface SimpleLibraryServiceCallback<T> {
     void onCompletion(T input);
     void onError(String message);
 }

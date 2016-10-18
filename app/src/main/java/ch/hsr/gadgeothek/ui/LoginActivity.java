@@ -8,8 +8,8 @@ import android.widget.Switch;
 
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
-import ch.hsr.gadgeothek.service.Callback;
 import ch.hsr.gadgeothek.service.LibraryService;
+import ch.hsr.gadgeothek.service.SimpleLibraryServiceCallback;
 
 public class LoginActivity extends BaseLoginSignupActivity {
 
@@ -32,7 +32,7 @@ public class LoginActivity extends BaseLoginSignupActivity {
         findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doLogin(emailAddressEditText, passwordEditText, keepMeLoggedInSwitch, LoginActivity.this, new Callback<Boolean>() {
+                doLogin(emailAddressEditText, passwordEditText, keepMeLoggedInSwitch, LoginActivity.this, new SimpleLibraryServiceCallback<Boolean>() {
                     @Override
                     public void onCompletion(Boolean input) {
                         startMainActivity(LoginActivity.this);

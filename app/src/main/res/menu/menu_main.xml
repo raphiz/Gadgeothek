@@ -1,18 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!--<item-->
-        <!--android:id="@+id/searchMenu"-->
-        <!--app:showAsAction="always"-->
-        <!--android:icon="@android:drawable/ic_menu_search"-->
-        <!--app:actionViewClass="android.support.v7.widget.SearchView"-->
-        <!--android:title="Search">-->
-    <!--</item>-->
-    <item
-        android:id="@+id/refreshMenu"
-        app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_rotate"
-        android:title="@string/reload">
-    </item>
     <item
         android:id="@+id/logoutMenu"
         app:showAsAction="always"

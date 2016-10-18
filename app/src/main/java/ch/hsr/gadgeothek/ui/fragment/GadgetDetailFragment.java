@@ -18,8 +18,6 @@ import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.domain.Loan;
 import ch.hsr.gadgeothek.domain.Reservation;
-import ch.hsr.gadgeothek.service.Callback;
-import ch.hsr.gadgeothek.service.LibraryService;
 import ch.hsr.gadgeothek.ui.GadgetDetailCallback;
 
 
