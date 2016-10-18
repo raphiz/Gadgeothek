@@ -1,5 +1,6 @@
 package ch.hsr.gadgeothek.service;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -13,6 +14,7 @@ import java.util.List;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.domain.Loan;
 import ch.hsr.gadgeothek.domain.Reservation;
+import ch.hsr.gadgeothek.util.SharedPreferencesHandler;
 
 public class LibraryService {
     
@@ -30,15 +32,30 @@ public class LibraryService {
     }
     public static boolean keepMeLoggedIn() {return token != null && token.getKeepMeLoggedIn(); }
 
-    public static void login(String mail, String password, final boolean keepMeLoggedIn, final SimpleLibraryServiceCallback<Boolean> callback) {
+    public static boolean handleAutomaticLogin(final Context context) {
+        LoginToken tempLoginToken = SharedPreferencesHandler.getLoginToken(context);
+        if (tempLoginToken != null) {
+            token = tempLoginToken;
+            Log.d("token", "login token is not null");
+            return true;
+        }
+        Log.d("token", "login token is null");
+        return false;
+    }
+
+    public static void login(String mail, String password, final boolean keepMeLoggedIn, final Context context, final SimpleLibraryServiceCallback<Boolean> callback) {
         HashMap<String, String> parameter = new HashMap<>();
         parameter.put("email", mail);
         parameter.put("password", password);
+
         Request<LoginToken> request = new Request<>(HttpVerb.POST, serverUrl + "/login", LoginToken.class, parameter, new SimpleLibraryServiceCallback<LoginToken>() {
             @Override
             public void onCompletion(LoginToken input) {
                 token = input;
                 token.setKeepMeLoggedIn(keepMeLoggedIn);
+                if (keepMeLoggedIn) {
+                    SharedPreferencesHandler.addLoginToken(context, token);
+                }
                 callback.onCompletion(input != null && !input.getSecurityToken().isEmpty());
             }
 
@@ -50,14 +67,18 @@ public class LibraryService {
         request.execute();
     }
 
-    public static void logout(final SimpleLibraryServiceCallback<Boolean> callback) {
+    public static void logout(final Context context, final SimpleLibraryServiceCallback<Boolean> callback) {
         HashMap<String, String> parameter = new HashMap<>();
         parameter.put("token", getTokenAsString());
+
+        SharedPreferencesHandler.removeLoginToken(context);
+
         Request<Boolean> request = new Request<>(HttpVerb.POST, serverUrl + "/logout", Boolean.class, parameter, new SimpleLibraryServiceCallback<Boolean>() {
             @Override
             public void onCompletion(Boolean input) {
                 if (input) {
                     token = null;
+                    //TODO remove token from shared preferences
                 }
                 callback.onCompletion(input);
             }

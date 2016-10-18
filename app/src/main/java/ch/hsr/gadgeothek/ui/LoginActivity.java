@@ -20,7 +20,7 @@ public class LoginActivity extends BaseLoginSignupActivity {
 
         LibraryService.setServerAddress("http://mge1.dev.ifs.hsr.ch/public");
 
-        if (LibraryService.isLoggedIn() ) {
+        if (LibraryService.isLoggedIn() || LibraryService.handleAutomaticLogin(LoginActivity.this)) {
             startMainActivity(LoginActivity.this);
             return;
         }

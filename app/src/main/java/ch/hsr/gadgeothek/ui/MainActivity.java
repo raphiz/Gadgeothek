@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logoutMenu:
-                LibraryService.logout(new SimpleLibraryServiceCallback<Boolean>() {
+                LibraryService.logout(MainActivity.this, new SimpleLibraryServiceCallback<Boolean>() {
                     @Override
                     public void onCompletion(Boolean input) {
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     protected void onDestroy() {
         super.onDestroy();
         if (!LibraryService.keepMeLoggedIn() && LibraryService.isLoggedIn()) {
-            LibraryService.logout(new SimpleLibraryServiceCallback<Boolean>() {
+            LibraryService.logout(MainActivity.this, new SimpleLibraryServiceCallback<Boolean>() {
                 @Override
                 public void onCompletion(Boolean input) {
                     Log.d("logout", "logout completed");

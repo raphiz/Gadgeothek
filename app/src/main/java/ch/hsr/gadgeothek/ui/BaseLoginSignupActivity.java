@@ -32,7 +32,7 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
         final String password = passwordEditText.getText().toString();
         final boolean keepMeLoggedIn = keepMeLoggedInSwitch.isChecked();
 
-        LibraryService.login(emailAddress, password, keepMeLoggedIn, loginCallback);
+        LibraryService.login(emailAddress, password, keepMeLoggedIn, context, loginCallback);
     }
 
     protected void doSignUp(final EditText emailAddressEditText,
