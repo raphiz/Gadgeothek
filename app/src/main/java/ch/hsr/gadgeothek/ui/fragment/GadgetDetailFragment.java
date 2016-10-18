@@ -23,7 +23,7 @@ import ch.hsr.gadgeothek.service.LibraryService;
 import ch.hsr.gadgeothek.ui.GadgetDetailCallback;
 
 
-public class GadgetDetailFragment extends Fragment {
+public class GadgetDetailFragment extends Fragment implements View.OnClickListener {
 
     private Gadget gadget;
     private Reservation reservation;
@@ -87,14 +87,7 @@ public class GadgetDetailFragment extends Fragment {
 
         //TODO: Check if there is a reservation
         // TODO: Change button label AND function depending on reservation
-
-//        delReservationButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                gadgetDetailCallback.onReserveDeleteButtonClicked(gadget);
-//            }
-//        });
+        reserveButton.setOnClickListener(this);
 
         return rootView;
     }
@@ -114,5 +107,14 @@ public class GadgetDetailFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         gadgetDetailCallback = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (reservation != null) {
+            gadgetDetailCallback.onReserveDelete(reservation);
+        } else {
+            gadgetDetailCallback.onReserve(gadget);
+        }
     }
 }

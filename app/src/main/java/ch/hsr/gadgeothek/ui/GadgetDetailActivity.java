@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import ch.hsr.gadgeothek.R;
@@ -52,12 +53,14 @@ public class GadgetDetailActivity extends AppCompatActivity implements GadgetDet
     }
 
     @Override
-    public void onReserveButtonClicked(Gadget gadget) {
+    public void onReserve(Gadget gadget) {
         // TODO: Implement
+        Log.d("DEBUG", "make Reservation of " + gadget.getName());
     }
 
     @Override
-    public void onReserveDeleteButtonClicked(Gadget gadget) {
+    public void onReserveDelete(Reservation reservation) {
         // TODO: Implement
+        Log.d("DEBUG", "make Reservation of " + reservation.getGadget().getName());
     }
 }
