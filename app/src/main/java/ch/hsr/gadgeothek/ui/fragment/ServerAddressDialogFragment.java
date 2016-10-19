@@ -14,10 +14,6 @@ import android.widget.TextView;
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.util.SharedPreferencesHandler;
 
-/**
- * Created by jmat on 19.10.16.
- */
-
 public class ServerAddressDialogFragment extends DialogFragment {
 
     @Override
@@ -44,6 +40,7 @@ public class ServerAddressDialogFragment extends DialogFragment {
                     ServerAddressDialogFragment.this.getDialog().cancel();
                 }
             });
+        builder.setTitle(R.string.change_server_url);
         return builder.create();
     }
 }

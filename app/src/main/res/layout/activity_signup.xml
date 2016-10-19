@@ -95,4 +95,13 @@
         android:layout_below="@id/keepMeLoggedInSwitch"
         android:layout_alignStart="@id/keepMeLoggedInSwitch"/>
 
+    <TextView
+        android:id="@+id/changeServerAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/signupButton"
+        android:layout_alignStart="@id/signupButton"
+        android:text="@string/change_server_url"
+        android:layout_marginTop="8dp" />
+
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package ch.hsr.gadgeothek.ui;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Vibrator;
@@ -11,6 +12,7 @@ import android.widget.Switch;
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.service.LibraryService;
 import ch.hsr.gadgeothek.service.SimpleLibraryServiceCallback;
+import ch.hsr.gadgeothek.ui.fragment.ServerAddressDialogFragment;
 import ch.hsr.gadgeothek.util.InputValidator;
 
 public abstract class BaseLoginSignupActivity extends AppCompatActivity {
@@ -87,6 +89,11 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
+    }
+
+    protected void showServerAddressDialog() {
+        DialogFragment serverAddressDialog = new ServerAddressDialogFragment();
+        serverAddressDialog.show(getFragmentManager(), "serverAddress");
     }
 
 }

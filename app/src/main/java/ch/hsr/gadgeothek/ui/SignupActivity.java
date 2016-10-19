@@ -44,6 +44,14 @@ public class SignupActivity extends BaseLoginSignupActivity {
             }
         });
 
+        findViewById(R.id.changeServerAddress).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                showServerAddressDialog();
+            }
+        });
+
     }
 
 }

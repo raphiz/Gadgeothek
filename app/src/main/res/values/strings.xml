@@ -36,4 +36,5 @@
     <string name="waiting_position">Waiting Position:</string>
     <string name="reservation_ready">This gadget is ready to pickup!</string>
     <string name="change_server_url">change server url</string>
+    <string name="server_url">server url</string>
 </resources>
