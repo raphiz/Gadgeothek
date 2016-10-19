@@ -2,6 +2,7 @@ package ch.hsr.gadgeothek.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
@@ -78,6 +79,8 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
 
     protected void showOverallErrorMsg(int viewId, String errorMsg) {
         Snackbar.make(findViewById(viewId), errorMsg, Snackbar.LENGTH_SHORT).show();
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(200);
     }
 
     protected void startMainActivity(Context context) {
