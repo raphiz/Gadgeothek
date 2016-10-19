@@ -33,20 +33,25 @@ public class LibraryService {
     public static boolean keepMeLoggedIn() {return token != null && token.getKeepMeLoggedIn(); }
 
     public static boolean handleAutomaticLogin(final Context context) {
+        loadServerUrl(context);
         LoginToken tempLoginToken = SharedPreferencesHandler.getLoginToken(context);
         if (tempLoginToken != null) {
             token = tempLoginToken;
-            Log.d("token", "login token is not null");
             return true;
         }
-        Log.d("token", "login token is null");
         return false;
+    }
+
+    private static void loadServerUrl(final Context context) {
+        setServerAddress(SharedPreferencesHandler.getServerAddress(context));
     }
 
     public static void login(String mail, String password, final boolean keepMeLoggedIn, final Context context, final SimpleLibraryServiceCallback<Boolean> callback) {
         HashMap<String, String> parameter = new HashMap<>();
         parameter.put("email", mail);
         parameter.put("password", password);
+
+        loadServerUrl(context);
 
         Request<LoginToken> request = new Request<>(HttpVerb.POST, serverUrl + "/login", LoginToken.class, parameter, new SimpleLibraryServiceCallback<LoginToken>() {
             @Override

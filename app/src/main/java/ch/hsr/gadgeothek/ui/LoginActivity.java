@@ -18,8 +18,6 @@ public class LoginActivity extends BaseLoginSignupActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        LibraryService.setServerAddress("http://mge1.dev.ifs.hsr.ch/public");
-
         if (LibraryService.isLoggedIn() || LibraryService.handleAutomaticLogin(LoginActivity.this)) {
             startMainActivity(LoginActivity.this);
             return;

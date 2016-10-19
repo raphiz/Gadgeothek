@@ -10,6 +10,9 @@ public final class SharedPreferencesHandler {
     private static final String SHARED_PREFS_FILE = "gadeothek_prefs";
     private static final String CUSTOMER_ID = "customerId";
     private static final String SECURITY_TOKEN = "securityToken";
+    private static final String SERVER_ADDRESS ="serverAddress";
+
+    private static final String DEFAULT_SERVER_ADDRESS = "http://mge1.dev.ifs.hsr.ch/public";
 
     public static void addLoginToken(Context context, LoginToken loginToken) {
         SharedPreferences sharedPref = context.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
@@ -36,8 +39,21 @@ public final class SharedPreferencesHandler {
     public static void removeLoginToken(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.clear();
+        editor.remove(CUSTOMER_ID);
+        editor.remove(SECURITY_TOKEN);
         editor.commit();
+    }
+
+    public static void setServerAddress(Context context, String address) {
+        SharedPreferences sharedPref = context.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(SERVER_ADDRESS, address);
+        editor.commit();
+    }
+
+    public static String getServerAddress(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+        return sharedPref.getString(SERVER_ADDRESS, DEFAULT_SERVER_ADDRESS);
     }
 
 }
