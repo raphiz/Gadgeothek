@@ -1,5 +1,6 @@
 package ch.hsr.gadgeothek.ui;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.service.LibraryService;
 import ch.hsr.gadgeothek.service.SimpleLibraryServiceCallback;
+import ch.hsr.gadgeothek.ui.fragment.ServerAddressDialogFragment;
 
 public class LoginActivity extends BaseLoginSignupActivity {
 
@@ -51,6 +53,15 @@ public class LoginActivity extends BaseLoginSignupActivity {
                 intent.putExtra(Intent.EXTRA_EMAIL, emailAddressEditText.getText().toString());
                 intent.putExtra(Constant.INTENT_PASSWORD, passwordEditText.getText().toString());
                 startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.changeServerAddress).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                DialogFragment serverAddressDialog = new ServerAddressDialogFragment();
+                serverAddressDialog.show(getFragmentManager(), "serverAddress");
             }
         });
     }
