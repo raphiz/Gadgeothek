@@ -82,7 +82,21 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
     protected void showOverallErrorMsg(int viewId, String errorMsg) {
         Snackbar.make(findViewById(viewId), errorMsg, Snackbar.LENGTH_SHORT).show();
         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(200);
+        int dot = 200;          // Length of a Morse Code "dot" in milliseconds
+        int dash = 500;         // Length of a Morse Code "dash" in milliseconds
+        int shortGap = 200;     // Length of Gap Between dots/dashes
+        int mediumGap = 500;    // Length of Gap Between Letters
+        int longGap = 1000;     // Length of Gap Between Words
+        long[] pattern = {
+                0, 
+                dot, shortGap, dot, shortGap, dot,    // s
+                mediumGap,
+                dash, shortGap, dash, shortGap, dash, // o
+                mediumGap,
+                dot, shortGap, dot, shortGap, dot,    // s
+                longGap
+        };
+        vibrator.vibrate(pattern, -1);
     }
 
     protected void startMainActivity(Context context) {
