@@ -16,7 +16,7 @@ import ch.hsr.gadgeothek.util.InputValidator;
 
 public abstract class BaseLoginSignupActivity extends AppCompatActivity {
 
-    private void doLogin(final EditText emailAddressEditText,
+    protected void doLogin(final EditText emailAddressEditText,
                            final EditText passwordEditText,
                            final Switch keepMeLoggedInSwitch,
                            final Context context,
@@ -37,7 +37,7 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
         LibraryService.login(emailAddress, password, keepMeLoggedIn, context, loginCallback);
     }
 
-    private void doSignUp(final EditText emailAddressEditText,
+    protected void doSignUp(final EditText emailAddressEditText,
                             final EditText nameEditText,
                             final EditText studentNumberEditText,
                             final EditText passwordEditText,
@@ -78,13 +78,13 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
 
     }
 
-    private void startMainActivity(Context context) {
+    protected void startMainActivity(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }
 
-    private void showServerAddressDialog() {
+    protected void showServerAddressDialog() {
         DialogFragment serverAddressDialog = new ServerAddressDialogFragment();
         serverAddressDialog.show(getFragmentManager(), "serverAddress");
     }
