@@ -10,6 +10,7 @@ import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.service.LibraryService;
 import ch.hsr.gadgeothek.service.SimpleLibraryServiceCallback;
+import ch.hsr.gadgeothek.util.ErrorHandler;
 
 public class LoginActivity extends BaseLoginSignupActivity {
 
@@ -38,7 +39,7 @@ public class LoginActivity extends BaseLoginSignupActivity {
 
                     @Override
                     public void onError(String message) {
-                        showOverallErrorMsg(R.id.activity_login, getString(R.string.error_login));
+                        ErrorHandler.showOverallErrorMsg(LoginActivity.this, R.id.activity_login, getString(R.string.error_login));
                     }
                 });
             }

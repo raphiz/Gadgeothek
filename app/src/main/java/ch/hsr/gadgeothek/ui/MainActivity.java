@@ -1,13 +1,11 @@
 package ch.hsr.gadgeothek.ui;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DialogTitle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -24,10 +22,11 @@ import ch.hsr.gadgeothek.constant.Tab;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.domain.Loan;
 import ch.hsr.gadgeothek.domain.Reservation;
-import ch.hsr.gadgeothek.service.LibraryServiceCallback;
 import ch.hsr.gadgeothek.service.LibraryService;
+import ch.hsr.gadgeothek.service.LibraryServiceCallback;
 import ch.hsr.gadgeothek.service.SimpleLibraryServiceCallback;
 import ch.hsr.gadgeothek.ui.fragment.GadgetListFragment;
+import ch.hsr.gadgeothek.util.ErrorHandler;
 
 public class MainActivity extends AppCompatActivity implements GadgetListCallback {
 
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
 
                     @Override
                     public void onError(String message) {
-                        Snackbar.make(findViewById(R.id.activity_main), getResources().getString(R.string.logout_failed), Snackbar.LENGTH_LONG).show();
+                        ErrorHandler.showOverallErrorMsg(MainActivity.this, R.id.activity_main, getResources().getString(R.string.logout_failed));
                     }
                 });
                 return true;

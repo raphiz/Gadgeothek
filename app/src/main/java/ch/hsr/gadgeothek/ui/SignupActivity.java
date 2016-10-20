@@ -9,6 +9,7 @@ import android.widget.Switch;
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.service.SimpleLibraryServiceCallback;
+import ch.hsr.gadgeothek.util.ErrorHandler;
 
 public class SignupActivity extends BaseLoginSignupActivity {
 
@@ -38,7 +39,7 @@ public class SignupActivity extends BaseLoginSignupActivity {
 
                             @Override
                             public void onError(String message) {
-                                showOverallErrorMsg(R.id.activity_login, getString(R.string.error_login));
+                                ErrorHandler.showOverallErrorMsg(SignupActivity.this, R.id.activity_login, getString(R.string.error_login));
                             }
                         });
             }
