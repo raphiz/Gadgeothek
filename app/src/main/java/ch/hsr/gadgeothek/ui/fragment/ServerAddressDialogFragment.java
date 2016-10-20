@@ -27,14 +27,14 @@ public class ServerAddressDialogFragment extends DialogFragment {
         serverAddress.setText(SharedPreferencesHandler.getServerAddress(getActivity()), TextView.BufferType.EDITABLE);
 
         builder.setView(rootView)
-            .setPositiveButton("save", new DialogInterface.OnClickListener() {
+            .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     SharedPreferencesHandler.setServerAddress(getActivity(), serverAddress.getText().toString());
                 }
             })
-            .setNegativeButton("cancle", new DialogInterface.OnClickListener() {
+            .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     ServerAddressDialogFragment.this.getDialog().cancel();
