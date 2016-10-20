@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     tools:context="ch.hsr.gadgeothek.ui.fragment.GadgetListFragment">
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/gadgedListView">
-    </ListView>
+        android:id="@+id/gadgedRecyclerView"
+        />
 
 </android.support.v4.widget.SwipeRefreshLayout>

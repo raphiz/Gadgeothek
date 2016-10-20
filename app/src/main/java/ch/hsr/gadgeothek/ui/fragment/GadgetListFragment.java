@@ -4,18 +4,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.constant.Tab;
-import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.ui.GadgetListCallback;
 
 
@@ -26,7 +25,8 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
 
     private Tab tab;
 
-    private ListView gadgetListView;
+    private RecyclerView gadgetRecyclerView;
+
 
     private GadgetListCallback gadgetListCallback;
 
@@ -52,6 +52,48 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
         }
     }
 
+    public class GadgetAdapter extends RecyclerView.Adapter<GadgetAdapter.GadgetViewHolder>{
+
+        private final View emptyLayout;
+
+        public GadgetAdapter(View emptyLayout) {
+            super();
+            this.emptyLayout = emptyLayout;
+        }
+
+        @Override
+        public GadgetViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+//            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.viewgroup_gadgetcard, viewGroup, false);
+            GadgetViewHolder pvh = new GadgetViewHolder(emptyLayout);
+            return pvh;
+        }
+
+
+
+        @Override
+        public void onBindViewHolder(GadgetViewHolder holder, int position) {
+            //TO BE DONE
+        }
+
+        @Override
+        public int getItemCount() {
+            return 1;
+        }
+
+        public  class GadgetViewHolder extends RecyclerView.ViewHolder {
+            CardView cv;
+//            TextView personName;
+
+            GadgetViewHolder(View itemView) {
+                super(itemView);
+                cv = (CardView)itemView.findViewById(R.id.gadget_detail_cardview);
+//                personName = (TextView)itemView.findViewById(R.id.person_name);
+            }
+        }
+    }
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,19 +103,16 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh_layout);
         swipeLayout.setOnRefreshListener(this);
 
-        gadgetListView = (ListView) rootView.findViewById(R.id.gadgedListView);
-        gadgetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Gadget clickedGaddget = (Gadget) parent.getItemAtPosition(position);
-                gadgetListCallback.onGadgetClicked(clickedGaddget);
-            }
-        });
-        View emptyLayout = inflater.inflate(R.layout.gadgetview_empty_reservations, null);
-        // TODO: Empty View doesn't work yet
-        gadgetListView.setEmptyView(emptyLayout);
+        gadgetRecyclerView = (RecyclerView) rootView.findViewById(R.id.gadgedRecyclerView);
 
-        gadgetListView.setAdapter(gadgetListCallback.getAdapter(tab));
+        View emptyLayout = inflater.inflate(R.layout.gadgetview_empty_reservations, null);
+        GadgetAdapter adapter = new GadgetAdapter(emptyLayout);
+
+        gadgetRecyclerView.setHasFixedSize(true);
+        gadgetRecyclerView.setAdapter(adapter);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        gadgetRecyclerView.setLayoutManager(llm);
+
 
         if(!initialized) {
             swipeLayout.setRefreshing(!loaded);
