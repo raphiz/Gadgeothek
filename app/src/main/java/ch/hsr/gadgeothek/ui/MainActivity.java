@@ -60,9 +60,10 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         getSupportActionBar().setElevation(0f);
 
         // Setup ListView Adapters
-        this.gadgetAdapter = new GadgetItemAdapter(this);
-        this.reservationsAdapter = new GadgetItemAdapter(this);
-        this.loansAdapter = new GadgetItemAdapter(this);
+        View emptyLayout = getLayoutInflater().inflate(R.layout.gadgetview_empty_reservations, null); // Maybe doesn't work here
+        this.gadgetAdapter = new GadgetItemAdapter(emptyLayout, this);
+        this.reservationsAdapter = new GadgetItemAdapter(emptyLayout, this);
+        this.loansAdapter = new GadgetItemAdapter(emptyLayout, this);
 
         // Setup Tabs
         TabLayout tabs = (TabLayout) findViewById(R.id.main_tabs);
@@ -124,16 +125,19 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
                 reservations = loadedReservations;
 
                 gadgetAdapter.setGadgetList(gadgets);
+                gadgetAdapter.setReservationList(reservations);
                 gadgetAdapter.notifyDataSetChanged();
 
-                List<Gadget> loanedGadgets = new ArrayList<Gadget>();
+                List<Gadget> loanedGadgets = new ArrayList<>();
                 for (Loan loan : loans){loanedGadgets.add(loan.getGadget());}
                 loansAdapter.setGadgetList(loanedGadgets);
+                loansAdapter.setLoanList(loans);
                 loansAdapter.notifyDataSetChanged();
 
-                List<Gadget> reservedGadgets = new ArrayList<Gadget>();
+                List<Gadget> reservedGadgets = new ArrayList<>();
                 for (Loan loan : loans){reservedGadgets .add(loan.getGadget());}
                 reservationsAdapter.setGadgetList(reservedGadgets );
+                reservationsAdapter.setReservationList(reservations);
                 reservationsAdapter.notifyDataSetChanged();
 
                 gadgetsFragment.onDataRefreshed();
@@ -167,36 +171,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     }
 
     @Override
-    public void onGadgetClicked(Gadget gadget) {
-        Intent fragmentIntent = new Intent(this, GadgetDetailActivity.class);
-
-        // Filter for active reservations
-        Reservation reservation = null;
-        for(Reservation current : reservations){
-            if(gadget.equals(current.getGadget()) && !current.getFinished()){
-                reservation = current;
-                break;
-            }
-        }
-
-        // Filter for active loans
-        Loan loan = null;
-        for(Loan current: loans){
-            if(gadget.equals(current.getGadget()) && !current.isLent()){
-                loan = current;
-                break;
-            }
-        }
-
-        fragmentIntent.putExtra(Constant.GADGET, gadget);
-        fragmentIntent.putExtra(Constant.RESERVATION, reservation);
-        fragmentIntent.putExtra(Constant.LOAN, loan);
-
-        startActivity(fragmentIntent);
-    }
-
-    @Override
-    public ArrayAdapter<Gadget> getAdapter(Tab tab) {
+    public GadgetItemAdapter getAdapter(Tab tab) {
          switch (tab) {
             case GADGETS:
                 return gadgetAdapter;

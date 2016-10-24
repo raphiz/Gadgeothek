@@ -1,70 +1,171 @@
 package ch.hsr.gadgeothek.ui;
 
 import android.content.Context;
-import android.support.v4.util.Pair;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.domain.Gadget;
+import ch.hsr.gadgeothek.domain.Loan;
+import ch.hsr.gadgeothek.domain.Reservation;
 
-public class GadgetItemAdapter extends ArrayAdapter<Gadget> {
+
+public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.GadgetViewHolder>{
+
+    private View emptyLayout;
     private List<Gadget> gadgetList;
+    private List<Reservation> reservationList;
+    private List<Loan> loanList;
     private Context activity;
 
-    public GadgetItemAdapter(Context activity) {
-        super(activity, R.layout.gadgetview_item);
+    public GadgetItemAdapter(View emptyLayout, Context activity) {
+        gadgetList = new ArrayList<>();
+        this.emptyLayout = emptyLayout;
         this.activity = activity;
-        this.gadgetList = new ArrayList<>();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final Gadget gadget = gadgetList.get(position);
-        if (convertView == null) {
-            LayoutInflater layoutInflater =
-                    (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.gadgetview_item, null);
-
-            TextView gadgetNameView = (TextView) convertView.findViewById(R.id.textViewGadgetName);
-            TextView manufacturerView = (TextView) convertView.findViewById(R.id.textViewManufacturer);
-
-            Pair<TextView, TextView> views = new Pair<>(gadgetNameView, manufacturerView);
-            convertView.setTag(views);
+    public GadgetViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        // TODO: onCreateView() seems to get called if getItemCount() != 0
+        GadgetViewHolder pvh;
+        if (gadgetList.size() == 0) {
+            pvh = new GadgetViewHolder(emptyLayout);
+        } else {
+            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.viewgroup_gadgetcard, viewGroup, false);
+            pvh = new GadgetViewHolder(v);
         }
 
-        Pair<TextView, TextView> views = (Pair<TextView, TextView>)  convertView.getTag();
-        TextView gadgetNameView = views.first;
-        TextView manufacturerView = views.second;
+        return pvh;
+    }
 
-        manufacturerView.setText(gadget.getManufacturer());
-        gadgetNameView.setText(gadget.getName());
+    @Override
+    public void onBindViewHolder(GadgetViewHolder holder, int position) {
+        if (position == 0 && gadgetList.size() == 0) return; // show empty layout
+        DateFormat dateFormatter = android.text.format.DateFormat.getDateFormat(activity);
+        Resources resources = activity.getResources();
+        Gadget gadget = gadgetList.get(position);
 
-        return convertView;
+        holder.title.setText(gadget.getName());
+        String conditionText = String.format("%s: %s",
+                resources.getString(R.string.condition), gadget.getCondition().toString().toLowerCase());
+        holder.condition.setText(conditionText);
+        holder.manufacturer.setText(gadget.getManufacturer());
+        holder.price.setText(String.valueOf(gadget.getPrice()));
+
+        Loan loan = findLoan(gadget);
+        if (loan != null) {
+            holder.reserveButton.setVisibility(View.GONE);
+            if (loan.isOverdue()) {
+                String overDueText = String.format("%s %s",
+                        resources.getString(R.string.loan_overdue), dateFormatter.format(loan.overDueDate()));
+                holder.reservedAt.setText(overDueText);
+                holder.reservedAt.setTextColor(Color.RED);
+            } else {
+                String returnUntilText = String.format("%s %s",
+                        resources.getString(R.string.return_until), dateFormatter.format(loan.overDueDate()));
+                holder.reservedAt.setText(returnUntilText);
+                holder.reservedAt.setTextColor(ContextCompat.getColor(activity, R.color.colorAccent));
+            }
+        } else {
+            Reservation reservation = findReservation(gadget);
+            if (reservation != null) {
+                holder.reserveButton.setVisibility(View.GONE);
+                holder.deleteReserveButton.setVisibility(View.VISIBLE);
+                String reservedAtText = String.format("%s %s",
+                            resources.getString(R.string.has_been_reserved_at),
+                            dateFormatter.format(reservation.getReservationDate()));
+                holder.reservedAt.setText(reservedAtText);
+            } else {
+                holder.reservedAt.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private Reservation findReservation(Gadget gadget) {
+        if (reservationList == null) return null;
+        for (Reservation reservation : reservationList) {
+            if (reservation.equals(gadget) && !reservation.getFinished())
+                return reservation;
+        }
+        return null;
+    }
+
+    private Loan findLoan(Gadget gadget) {
+        if (loanList == null) return null;
+        for (Loan loan : loanList) {
+            if (loan.equals(gadget) && loan.isLent())
+                return loan;
+        }
+        return null;
     }
 
     public void setGadgetList(List<Gadget> gadgetList) {
         this.gadgetList = gadgetList;
     }
 
-    @Override
-    public Gadget getItem(int position) {
-        return gadgetList.get(position);
+    public void setReservationList(List<Reservation> reservationList) {
+        this.reservationList = reservationList;
+    }
+
+    public void setLoanList(List<Loan> loanList) {
+        this.loanList = loanList;
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
+//        int size = gadgetList.size();
+//        if (size == 0) {
+//            return 1; // UGLY HACK!!
+//        }
+//        return size;
         return gadgetList.size();
     }
 
-    @Override
-    public boolean isEmpty() {
-        return gadgetList.isEmpty();
+    public  class GadgetViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        CardView cv;
+        TextView title, manufacturer, condition, price, reservedAt;
+        Button reserveButton, deleteReserveButton;
+
+
+        GadgetViewHolder(View itemView) {
+            super(itemView);
+            cv = (CardView)itemView.findViewById(R.id.gadget_detail_cardview);
+            title = (TextView) itemView.findViewById(R.id.gadget_detail_title);
+            manufacturer = (TextView) itemView.findViewById(R.id.gadget_detail_manufacturer);
+            condition = (TextView) itemView.findViewById(R.id.gadget_detail_condition);
+            price = (TextView) itemView.findViewById(R.id.gadget_detail_price);
+            reservedAt = (TextView) itemView.findViewById(R.id.gadget_detail_reserved);
+            reserveButton = (Button) itemView.findViewById(R.id.gadget_detail_reserve_button);
+            deleteReserveButton = (Button) itemView.findViewById(R.id.gadget_detail_del_reserve_button);
+
+            if (reserveButton != null)
+                reserveButton.setOnClickListener(this);
+            if (deleteReserveButton != null)
+                deleteReserveButton.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == reserveButton.getId()) {
+                // TODO: Reserve
+                Gadget gadget = gadgetList.get(getAdapterPosition());
+                Log.d("Debug", "Reserve Gadget " + gadget.getName());
+            } else if (v.getId() == deleteReserveButton.getId()) {
+                // TODO: Delete reservation
+            }
+        }
     }
 }

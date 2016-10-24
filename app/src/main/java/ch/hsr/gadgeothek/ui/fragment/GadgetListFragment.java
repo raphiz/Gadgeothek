@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.constant.Tab;
+import ch.hsr.gadgeothek.ui.GadgetItemAdapter;
 import ch.hsr.gadgeothek.ui.GadgetListCallback;
 
 
@@ -26,7 +27,6 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
     private Tab tab;
 
     private RecyclerView gadgetRecyclerView;
-
 
     private GadgetListCallback gadgetListCallback;
 
@@ -52,47 +52,6 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
         }
     }
 
-    public class GadgetAdapter extends RecyclerView.Adapter<GadgetAdapter.GadgetViewHolder>{
-
-        private final View emptyLayout;
-
-        public GadgetAdapter(View emptyLayout) {
-            super();
-            this.emptyLayout = emptyLayout;
-        }
-
-        @Override
-        public GadgetViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-//            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.viewgroup_gadgetcard, viewGroup, false);
-            GadgetViewHolder pvh = new GadgetViewHolder(emptyLayout);
-            return pvh;
-        }
-
-
-
-        @Override
-        public void onBindViewHolder(GadgetViewHolder holder, int position) {
-            //TO BE DONE
-        }
-
-        @Override
-        public int getItemCount() {
-            return 1;
-        }
-
-        public  class GadgetViewHolder extends RecyclerView.ViewHolder {
-            CardView cv;
-//            TextView personName;
-
-            GadgetViewHolder(View itemView) {
-                super(itemView);
-                cv = (CardView)itemView.findViewById(R.id.gadget_detail_cardview);
-//                personName = (TextView)itemView.findViewById(R.id.person_name);
-            }
-        }
-    }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,8 +64,7 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
 
         gadgetRecyclerView = (RecyclerView) rootView.findViewById(R.id.gadgedRecyclerView);
 
-        View emptyLayout = inflater.inflate(R.layout.gadgetview_empty_reservations, null);
-        GadgetAdapter adapter = new GadgetAdapter(emptyLayout);
+        GadgetItemAdapter adapter = gadgetListCallback.getAdapter(tab);
 
         gadgetRecyclerView.setHasFixedSize(true);
         gadgetRecyclerView.setAdapter(adapter);
