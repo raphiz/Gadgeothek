@@ -39,4 +39,12 @@
     <string name="server_url">Server Url</string>
     <string name="save">save</string>
     <string name="cancel">cancel</string>
+    <string name="reservation_failed">Reservation has failed 😭</string>
+    <string name="confirm_reservation">Confirm Reservation</string>
+    <string name="confirm_reservation_message">Do you want to reserve %s?</string>
+    <string name="reservation_successful">Reservation successful!</string>
+    <string name="del_reservation_failed">Deletion of reservation has failed 😭</string>
+    <string name="confirm_del_reservation">Confirm Deletion</string>
+    <string name="confirm_del_reservation_message">Do you want to delete your reservation of %s?</string>
+    <string name="del_reservation_successful">Reservation has benn successfully deleted!</string>
 </resources>

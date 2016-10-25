@@ -21,7 +21,6 @@ import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.domain.Loan;
 import ch.hsr.gadgeothek.domain.Reservation;
-import ch.hsr.gadgeothek.ui.fragment.GadgetListFragment;
 
 
 public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.GadgetViewHolder>{
@@ -29,11 +28,11 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
     private List<Gadget> gadgetList;
     private List<Reservation> reservationList;
     private List<Loan> loanList;
-    private Context activity;
+    private GadgetListCallback callback;
 
-    public GadgetItemAdapter(Context activity) {
+    public GadgetItemAdapter(GadgetListCallback callback) {
         gadgetList = new ArrayList<>();
-        this.activity = activity;
+        this.callback = callback;
     }
 
     @Override
@@ -45,9 +44,8 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
 
     @Override
     public void onBindViewHolder(GadgetViewHolder holder, int position) {
-        if (position == 0 && gadgetList.size() == 0) return; // show empty layout
-        DateFormat dateFormatter = android.text.format.DateFormat.getDateFormat(activity);
-        Resources resources = activity.getResources();
+        DateFormat dateFormatter = android.text.format.DateFormat.getDateFormat((Context) callback);
+        Resources resources = ((Context)callback).getResources();
         Gadget gadget = gadgetList.get(position);
 
         holder.title.setText(gadget.getName());
@@ -69,7 +67,7 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
                 String returnUntilText = String.format("%s %s",
                         resources.getString(R.string.return_until), dateFormatter.format(loan.overDueDate()));
                 holder.reservedAt.setText(returnUntilText);
-                holder.reservedAt.setTextColor(ContextCompat.getColor(activity, R.color.colorAccent));
+                holder.reservedAt.setTextColor(ContextCompat.getColor((Context) callback, R.color.colorAccent));
             }
         } else {
             Reservation reservation = findReservation(gadget);
@@ -82,6 +80,8 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
                 holder.reservedAt.setText(reservedAtText);
             } else {
                 holder.reservedAt.setVisibility(View.GONE);
+                holder.reserveButton.setVisibility(View.VISIBLE);
+                holder.deleteReserveButton.setVisibility(View.GONE);
             }
         }
     }
@@ -89,7 +89,7 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
     private Reservation findReservation(Gadget gadget) {
         if (reservationList == null) return null;
         for (Reservation reservation : reservationList) {
-            if (reservation.equals(gadget) && !reservation.getFinished())
+            if (reservation.getGadget().equals(gadget) && !reservation.getFinished())
                 return reservation;
         }
         return null;
@@ -98,7 +98,7 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
     private Loan findLoan(Gadget gadget) {
         if (loanList == null) return null;
         for (Loan loan : loanList) {
-            if (loan.equals(gadget) && loan.isLent())
+            if (loan.getGadget().equals(gadget) && loan.isLent())
                 return loan;
         }
         return null;
@@ -138,20 +138,17 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
             reserveButton = (Button) itemView.findViewById(R.id.gadget_detail_reserve_button);
             deleteReserveButton = (Button) itemView.findViewById(R.id.gadget_detail_del_reserve_button);
 
-            if (reserveButton != null)
-                reserveButton.setOnClickListener(this);
-            if (deleteReserveButton != null)
-                deleteReserveButton.setOnClickListener(this);
+            reserveButton.setOnClickListener(this);
+            deleteReserveButton.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            Gadget gadget = gadgetList.get(getAdapterPosition());
             if (v.getId() == reserveButton.getId()) {
-                // TODO: Reserve
-                Gadget gadget = gadgetList.get(getAdapterPosition());
-                Log.d("Debug", "Reserve Gadget " + gadget.getName());
+                callback.onReserveGadget(gadget);
             } else if (v.getId() == deleteReserveButton.getId()) {
-                // TODO: Delete reservation
+                callback.onDeleteReservation(findReservation(gadget));
             }
         }
     }

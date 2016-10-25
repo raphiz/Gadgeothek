@@ -1,23 +1,24 @@
 package ch.hsr.gadgeothek.ui;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.gadgeothek.R;
-import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.constant.Tab;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.domain.Loan;
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
 
                 gadgetAdapter.setGadgetList(gadgets);
                 gadgetAdapter.setReservationList(reservations);
+                gadgetAdapter.setLoanList(loans);
                 gadgetAdapter.notifyDataSetChanged();
 
                 List<Gadget> loanedGadgets = new ArrayList<>();
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
                 loansAdapter.notifyDataSetChanged();
 
                 List<Gadget> reservedGadgets = new ArrayList<>();
-                for (Loan loan : loans){reservedGadgets .add(loan.getGadget());}
+                for (Reservation reservation : reservations){reservedGadgets.add(reservation.getGadget());}
                 reservationsAdapter.setGadgetList(reservedGadgets );
                 reservationsAdapter.setReservationList(reservations);
                 reservationsAdapter.notifyDataSetChanged();
@@ -186,6 +188,84 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     @Override
     public void onGadgetListRefresh(GadgetListFragment fragment) {
         loadData();
+    }
+
+    @Override
+    public void onReserveGadget(final Gadget gadget) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle(getString(R.string.confirm_reservation));
+        dialogBuilder.setMessage(String.format(getString(R.string.confirm_reservation_message), gadget.getName()));
+
+        String positiveText = getString(android.R.string.ok);
+        dialogBuilder.setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                LibraryService.reserveGadget(gadget, new SimpleLibraryServiceCallback<Boolean>() {
+                    @Override
+                    public void onCompletion(Boolean input) {
+                        loadData();
+                        snackbar = Snackbar
+                                .make(findViewById(R.id.activity_main), getString(R.string.reservation_successful), Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        ErrorHandler.showOverallErrorMsg(
+                                MainActivity.this, R.id.activity_main, getResources().getString(R.string.reservation_failed));
+                    }
+                });
+            }
+        });
+
+        String negativeText = getString(android.R.string.cancel);
+        dialogBuilder.setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+        Dialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void onDeleteReservation(final Reservation reservation) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle(getString(R.string.confirm_del_reservation));
+        dialogBuilder.setMessage(String.format(getString(R.string.confirm_del_reservation_message), reservation.getGadget().getName()));
+
+        String positiveText = getString(android.R.string.ok);
+        dialogBuilder.setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                LibraryService.deleteReservation(reservation, new SimpleLibraryServiceCallback<Boolean>() {
+                    @Override
+                    public void onCompletion(Boolean input) {
+                        loadData();
+                        snackbar = Snackbar
+                                .make(findViewById(R.id.activity_main), getString(R.string.del_reservation_successful), Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        ErrorHandler.showOverallErrorMsg(
+                                MainActivity.this, R.id.activity_main, getResources().getString(R.string.del_reservation_failed));
+                    }
+                });
+            }
+        });
+
+        String negativeText = getString(android.R.string.cancel);
+        dialogBuilder.setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+        Dialog dialog = dialogBuilder.create();
+        dialog.show();
     }
 
     @Override
