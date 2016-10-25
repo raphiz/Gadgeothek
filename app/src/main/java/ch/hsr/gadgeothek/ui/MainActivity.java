@@ -60,10 +60,9 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
         getSupportActionBar().setElevation(0f);
 
         // Setup ListView Adapters
-        View emptyLayout = getLayoutInflater().inflate(R.layout.gadgetview_empty_reservations, null); // Maybe doesn't work here
-        this.gadgetAdapter = new GadgetItemAdapter(emptyLayout, this);
-        this.reservationsAdapter = new GadgetItemAdapter(emptyLayout, this);
-        this.loansAdapter = new GadgetItemAdapter(emptyLayout, this);
+        this.gadgetAdapter = new GadgetItemAdapter(this);
+        this.reservationsAdapter = new GadgetItemAdapter(this);
+        this.loansAdapter = new GadgetItemAdapter(this);
 
         // Setup Tabs
         TabLayout tabs = (TabLayout) findViewById(R.id.main_tabs);

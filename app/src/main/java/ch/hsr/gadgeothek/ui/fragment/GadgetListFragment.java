@@ -17,6 +17,7 @@ import ch.hsr.gadgeothek.constant.Constant;
 import ch.hsr.gadgeothek.constant.Tab;
 import ch.hsr.gadgeothek.ui.GadgetItemAdapter;
 import ch.hsr.gadgeothek.ui.GadgetListCallback;
+import ch.hsr.gadgeothek.ui.util.RecyclerViewEmptySupport;
 
 
 public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -26,7 +27,7 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
 
     private Tab tab;
 
-    private RecyclerView gadgetRecyclerView;
+    private RecyclerViewEmptySupport gadgetRecyclerView;
 
     private GadgetListCallback gadgetListCallback;
 
@@ -62,7 +63,8 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh_layout);
         swipeLayout.setOnRefreshListener(this);
 
-        gadgetRecyclerView = (RecyclerView) rootView.findViewById(R.id.gadgedRecyclerView);
+        gadgetRecyclerView = (RecyclerViewEmptySupport) rootView.findViewById(R.id.gadgedRecyclerView);
+        gadgetRecyclerView.setEmptyView(rootView.findViewById(R.id.layout_empty_reservations));
 
         GadgetItemAdapter adapter = gadgetListCallback.getAdapter(tab);
 

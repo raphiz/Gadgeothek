@@ -21,34 +21,26 @@ import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.domain.Gadget;
 import ch.hsr.gadgeothek.domain.Loan;
 import ch.hsr.gadgeothek.domain.Reservation;
+import ch.hsr.gadgeothek.ui.fragment.GadgetListFragment;
 
 
 public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.GadgetViewHolder>{
 
-    private View emptyLayout;
     private List<Gadget> gadgetList;
     private List<Reservation> reservationList;
     private List<Loan> loanList;
     private Context activity;
 
-    public GadgetItemAdapter(View emptyLayout, Context activity) {
+    public GadgetItemAdapter(Context activity) {
         gadgetList = new ArrayList<>();
-        this.emptyLayout = emptyLayout;
         this.activity = activity;
     }
 
     @Override
     public GadgetViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        // TODO: onCreateView() seems to get called if getItemCount() != 0
         GadgetViewHolder pvh;
-        if (gadgetList.size() == 0) {
-            pvh = new GadgetViewHolder(emptyLayout);
-        } else {
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.viewgroup_gadgetcard, viewGroup, false);
-            pvh = new GadgetViewHolder(v);
-        }
-
-        return pvh;
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.viewgroup_gadgetcard, viewGroup, false);
+        return new GadgetViewHolder(v);
     }
 
     @Override
@@ -126,11 +118,6 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
 
     @Override
     public int getItemCount() {
-//        int size = gadgetList.size();
-//        if (size == 0) {
-//            return 1; // UGLY HACK!!
-//        }
-//        return size;
         return gadgetList.size();
     }
 

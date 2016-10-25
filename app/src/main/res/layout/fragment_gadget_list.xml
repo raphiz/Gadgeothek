@@ -6,10 +6,21 @@
     android:layout_height="match_parent"
     tools:context="ch.hsr.gadgeothek.ui.fragment.GadgetListFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/gadgedRecyclerView"
-        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include
+            layout="@layout/gadgetview_empty_reservations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <ch.hsr.gadgeothek.ui.util.RecyclerViewEmptySupport
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/gadgedRecyclerView"
+            />
+
+    </LinearLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>
