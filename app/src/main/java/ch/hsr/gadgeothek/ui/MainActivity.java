@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     }
 
     @Override
-    public void onGadgetListRefresh(GadgetListFragment fragment) {
+    public void onGadgetListRefresh() {
         loadData();
     }
 

@@ -2,6 +2,7 @@ package ch.hsr.gadgeothek.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -106,7 +107,11 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
 
     @Override
     public void onRefresh() {
-        // TODO: Execute in Runnable
-        gadgetListCallback.onGadgetListRefresh(this);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                gadgetListCallback.onGadgetListRefresh();
+            }
+        });
     }
 }
