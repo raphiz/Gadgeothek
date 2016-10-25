@@ -4,9 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +61,7 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh_layout);
         swipeLayout.setOnRefreshListener(this);
 
-        gadgetRecyclerView = (RecyclerViewEmptySupport) rootView.findViewById(R.id.gadgedRecyclerView);
+        gadgetRecyclerView = (RecyclerViewEmptySupport) rootView.findViewById(R.id.gadgetRecyclerView);
         gadgetRecyclerView.setEmptyView(rootView.findViewById(R.id.layout_empty_reservations));
 
         GadgetItemAdapter adapter = gadgetListCallback.getAdapter(tab);

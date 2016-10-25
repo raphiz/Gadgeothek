@@ -35,8 +35,8 @@
     <string name="loan_overdue">This loan is overdue since</string>
     <string name="waiting_position">Waiting Position:</string>
     <string name="reservation_ready">This gadget is ready to pickup!</string>
-    <string name="change_server_url">change server url</string>
-    <string name="server_url">server url</string>
+    <string name="change_server_url">Change Server Url</string>
+    <string name="server_url">Server Url</string>
     <string name="save">save</string>
-    <string name="cancle">cancle</string>
+    <string name="cancel">cancel</string>
 </resources>
