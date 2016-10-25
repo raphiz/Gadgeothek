@@ -9,5 +9,5 @@ public interface GadgetListCallback {
     GadgetItemAdapter getAdapter(Tab tab);
     void onGadgetListRefresh(GadgetListFragment fragment);
     void onReserveGadget(final Gadget gadget);
-    void onDeleteReservation(final Reservation reservation);
+    void onDeleteReservation(final Reservation reservation, final GadgetItemAdapter adapter);
 }

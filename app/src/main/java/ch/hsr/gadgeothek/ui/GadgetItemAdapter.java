@@ -121,6 +121,17 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
         return gadgetList.size();
     }
 
+    public void onDeleteReservation(Reservation reservation) {
+        Gadget gadget = reservation.getGadget();
+        int position = gadgetList.indexOf(gadget);
+        if (position > -1) {
+            gadgetList.remove(position);
+            notifyItemRemoved(position);
+            if (getItemCount() == 0)
+                notifyDataSetChanged();
+        }
+    }
+
     public  class GadgetViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cv;
         TextView title, manufacturer, condition, price, reservedAt;
@@ -148,7 +159,7 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
             if (v.getId() == reserveButton.getId()) {
                 callback.onReserveGadget(gadget);
             } else if (v.getId() == deleteReserveButton.getId()) {
-                callback.onDeleteReservation(findReservation(gadget));
+                callback.onDeleteReservation(findReservation(gadget), GadgetItemAdapter.this);
             }
         }
     }

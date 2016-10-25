@@ -46,5 +46,6 @@
     <string name="del_reservation_failed">Deletion of reservation has failed 😭</string>
     <string name="confirm_del_reservation">Confirm Deletion</string>
     <string name="confirm_del_reservation_message">Do you want to delete your reservation of %s?</string>
-    <string name="del_reservation_successful">Reservation has benn successfully deleted!</string>
+    <string name="del_reservation_successful">Reservation has been successfully deleted!</string>
+    <string name="failed_to_load_data">Failed to load data..</string>
 </resources>

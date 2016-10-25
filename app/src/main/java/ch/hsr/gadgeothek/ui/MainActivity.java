@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -145,19 +146,14 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
                 loansFragment.onDataRefreshed();
                 reservationsFragment.onDataRefreshed();
 
-                // Hide Snackbar if visible
-                if(snackbar != null && snackbar.isShown()){
-                    snackbar.dismiss();;
-                }
-
-
             }
 
             @Override
             public void onError(String message) {
 
                 snackbar = Snackbar
-                        .make(findViewById(R.id.activity_main), "Failed to load data..", Snackbar.LENGTH_INDEFINITE)
+                        .make(findViewById(R.id.activity_main),
+                                getResources().getString(R.string.failed_to_load_data), Snackbar.LENGTH_INDEFINITE)
                         .setAction("RETRY", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -230,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
     }
 
     @Override
-    public void onDeleteReservation(final Reservation reservation) {
+    public void onDeleteReservation(final Reservation reservation, final GadgetItemAdapter adapter) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle(getString(R.string.confirm_del_reservation));
         dialogBuilder.setMessage(String.format(getString(R.string.confirm_del_reservation_message), reservation.getGadget().getName()));
@@ -242,7 +238,14 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
                 LibraryService.deleteReservation(reservation, new SimpleLibraryServiceCallback<Boolean>() {
                     @Override
                     public void onCompletion(Boolean input) {
-                        loadData();
+                        adapter.onDeleteReservation(reservation);
+                        // Reload all data delayed
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadData();
+                            }
+                        }, 500);
                         snackbar = Snackbar
                                 .make(findViewById(R.id.activity_main), getString(R.string.del_reservation_successful), Snackbar.LENGTH_LONG);
                         snackbar.show();
