@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements GadgetListCallbac
                 snackbar = Snackbar
                         .make(findViewById(R.id.activity_main),
                                 getResources().getString(R.string.failed_to_load_data), Snackbar.LENGTH_INDEFINITE)
-                        .setAction("RETRY", new View.OnClickListener() {
+                        .setAction(R.string.retry, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 snackbar.dismiss();
