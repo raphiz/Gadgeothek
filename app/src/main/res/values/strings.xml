@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Gadgeothek</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="version_nr">Version 1.0</string>
     <string name="email_address">email address</string>
     <string name="password">password</string>
@@ -15,10 +12,8 @@
     <string name="reserve">Reserve</string>
     <string name="price">Price</string>
     <string name="delete_reservation">Delete reservation</string>
-    <string name="title_activity_main2">Main2Activity</string>
     <string name="logout">Logout</string>
     <string name="manufacturer">Manufacturer</string>
-    <string name="reload">reload</string>
     <string name="gadgets">Gadgets</string>
     <string name="loans">Loans</string>
     <string name="reservations">Reservations</string>
@@ -29,16 +24,15 @@
     <string name="empty_reservations_title">No Reservations</string>
     <string name="empty_reservations_hint">Click on a gadget in the Gadgets Tab to add a reservation</string>
     <string name="logout_failed">Logout has failed 😭</string>
-    <string name="has_been_reserved_at">Has been reserved at</string>
-    <string name="lent_since">Lent since</string>
-    <string name="return_until">Return until</string>
-    <string name="loan_overdue">This loan is overdue since</string>
-    <string name="waiting_position">Waiting Position:</string>
+    <string name="has_been_reserved_at">Has been reserved at %s</string>
+    <string name="lent_since">Lent since %s</string>
+    <string name="return_until">Return until %s</string>
+    <string name="loan_overdue">This loan is overdue since %s</string>
+    <string name="waiting_position">Waiting Position: %s</string>
     <string name="reservation_ready">This gadget is ready to pickup!</string>
     <string name="change_server_url">Change Server Url</string>
     <string name="server_url">Server Url</string>
     <string name="save">save</string>
-    <string name="cancel">cancel</string>
     <string name="reservation_failed">Reservation has failed 😭</string>
     <string name="confirm_reservation">Confirm Reservation</string>
     <string name="confirm_reservation_message">Do you want to reserve %s?</string>

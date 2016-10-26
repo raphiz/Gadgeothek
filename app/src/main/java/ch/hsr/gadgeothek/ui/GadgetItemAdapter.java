@@ -58,13 +58,13 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
         if (loan != null) {
             holder.reserveButton.setVisibility(View.GONE);
             if (loan.isOverdue()) {
-                String overDueText = String.format("%s %s",
-                        resources.getString(R.string.loan_overdue), dateFormatter.format(loan.overDueDate()));
+                String overDueText = String.format(resources.getString(R.string.loan_overdue),
+                        dateFormatter.format(loan.overDueDate()));
                 holder.reservedAt.setText(overDueText);
                 holder.reservedAt.setTextColor(Color.RED);
             } else {
-                String returnUntilText = String.format("%s %s",
-                        resources.getString(R.string.return_until), dateFormatter.format(loan.overDueDate()));
+                String returnUntilText = String.format(resources.getString(R.string.return_until),
+                        dateFormatter.format(loan.overDueDate()));
                 holder.reservedAt.setText(returnUntilText);
                 holder.reservedAt.setTextColor(ContextCompat.getColor((Context) callback, R.color.colorAccent));
             }
@@ -73,8 +73,7 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
             if (reservation != null) {
                 holder.reserveButton.setVisibility(View.GONE);
                 holder.deleteReserveButton.setVisibility(View.VISIBLE);
-                String reservedAtText = String.format("%s %s",
-                            resources.getString(R.string.has_been_reserved_at),
+                String reservedAtText = String.format(resources.getString(R.string.has_been_reserved_at),
                             dateFormatter.format(reservation.getReservationDate()));
                 holder.reservedAt.setText(reservedAtText);
             } else {

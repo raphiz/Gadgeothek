@@ -34,7 +34,7 @@ public class ServerAddressDialogFragment extends DialogFragment {
                     SharedPreferencesHandler.setServerAddress(getActivity(), serverAddress.getText().toString());
                 }
             })
-            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     ServerAddressDialogFragment.this.getDialog().cancel();
