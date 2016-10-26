@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">Gadgeothek</string>
     <string name="version_nr">Version 1.0</string>
-    <string name="email_address">email address</string>
-    <string name="password">password</string>
-    <string name="keep_me_logged_in">keep me logged in</string>
-    <string name="login">login</string>
-    <string name="signup">signup</string>
-    <string name="name">name</string>
-    <string name="student_number">student number</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="keep_me_logged_in">Keep me logged in</string>
+    <string name="login">Login</string>
+    <string name="signup">Signup</string>
+    <string name="name">Name</string>
+    <string name="student_number">Student Number</string>
     <string name="condition">Condition</string>
     <string name="reserve">Reserve</string>
     <string name="price">Price</string>

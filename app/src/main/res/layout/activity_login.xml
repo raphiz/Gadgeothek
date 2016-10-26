@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -37,29 +37,42 @@
         android:text="@string/version_nr"
         android:textSize="10sp" />
 
-
-    <EditText
-        android:id="@+id/emailAddressEditText"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/email_text_input_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
+        android:layout_gravity="center"
         android:layout_below="@id/versionTextView"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/email_address"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_centerHorizontal="true">
 
-    <EditText
-        android:id="@+id/passwordEditText"
+        <EditText
+            android:id="@+id/emailAddressEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="@string/email_address"
+            android:ems="10" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/password_text_input_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:layout_below="@id/emailAddressEditText"
+        android:layout_gravity="center"
+        android:layout_below="@id/email_text_input_layout"
         android:layout_centerHorizontal="true"
-        android:hint="@string/password"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp" >
+
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:hint="@string/password" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <Switch
         android:id="@+id/keepMeLoggedInSwitch"
@@ -67,17 +80,18 @@
         android:layout_height="wrap_content"
         android:text="@string/keep_me_logged_in"
         android:checked="true"
-        android:layout_below="@id/passwordEditText"
-        android:layout_alignStart="@id/passwordEditText"
-        android:layout_alignEnd="@id/passwordEditText" />
+        android:layout_below="@id/password_text_input_layout"
+        android:layout_alignStart="@id/password_text_input_layout"
+        android:layout_alignEnd="@id/password_text_input_layout" />
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_below="@id/keepMeLoggedInSwitch"
-        android:layout_alignStart="@id/keepMeLoggedInSwitch"/>
+        android:layout_alignStart="@id/keepMeLoggedInSwitch" />
 
     <Button
         android:id="@+id/signupButton"
@@ -94,6 +108,6 @@
         android:layout_below="@id/loginButton"
         android:layout_alignStart="@id/loginButton"
         android:text="@string/change_server_url"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"/>
 
 </RelativeLayout>
