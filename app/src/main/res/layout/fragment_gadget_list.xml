@@ -13,7 +13,20 @@
         <include
             layout="@layout/gadgetview_empty_reservations"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+        <include
+            layout="@layout/gadgetview_empty_gadgets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+        <include
+            layout="@layout/gadgetview_empty_loans"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
         <ch.hsr.gadgeothek.ui.util.RecyclerViewEmptySupport
             android:layout_width="match_parent"

@@ -63,7 +63,8 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
         swipeLayout.setOnRefreshListener(this);
 
         gadgetRecyclerView = (RecyclerViewEmptySupport) rootView.findViewById(R.id.gadgetRecyclerView);
-        gadgetRecyclerView.setEmptyView(rootView.findViewById(R.id.layout_empty_reservations));
+
+        gadgetRecyclerView.setEmptyView(getEmptyLayout(rootView));
 
         GadgetItemAdapter adapter = gadgetListCallback.getAdapter(tab);
 
@@ -113,5 +114,18 @@ public class GadgetListFragment extends Fragment implements SwipeRefreshLayout.O
                 gadgetListCallback.onGadgetListRefresh();
             }
         });
+    }
+
+    private View getEmptyLayout(View rootView) {
+        switch (tab) {
+            case GADGETS:
+                return rootView.findViewById(R.id.layout_empty_gadgets);
+            case RESERVATIONS:
+                return rootView.findViewById(R.id.layout_empty_reservations);
+            case LOANS:
+                return rootView.findViewById(R.id.layout_empty_loans);
+            default:
+                return null;
+        }
     }
 }

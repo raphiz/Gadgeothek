@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_empty_loans"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/frowny_smile"
+            android:layout_gravity="center"
+            android:alpha="127" />
+
+        <TextView
+            android:text="@string/no_active_loans"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_vertical_margin"
+            android:id="@+id/no_loans_title"
+            android:textAlignment="center"
+            tools:text="No Active Loans"
+            android:textAppearance="@android:style/TextAppearance.Holo.Large" />
+
+        <TextView
+            android:text="@string/your_loans_will_be_shown_here"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:id="@+id/no_loans_hint"
+            android:textAlignment="center"
+            tools:text="Your loans will be shown here"
+            android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
+    </LinearLayout>
+</RelativeLayout>

@@ -48,4 +48,7 @@
     <string name="confirm_del_reservation_message">Do you want to delete your reservation of %s?</string>
     <string name="del_reservation_successful">Reservation has been successfully deleted!</string>
     <string name="failed_to_load_data">Failed to load data..</string>
+    <string name="no_active_loans">No active loans</string>
+    <string name="your_loans_will_be_shown_here">Your loans will be shown here</string>
+    <string name="no_gadgets_available">No Gadgets available</string>
 </resources>
