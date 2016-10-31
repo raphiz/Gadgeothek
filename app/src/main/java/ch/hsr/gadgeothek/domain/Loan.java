@@ -37,7 +37,7 @@ public class Loan implements Serializable{
     public boolean isOverdue() {
         if (!isLent())
             return false;
-        return overDueDate().after(new Date());
+        return !overDueDate().after(new Date());
     }
 
     public Date overDueDate() {
