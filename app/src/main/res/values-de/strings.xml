@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Gadgeothek</string>
     <string name="change_server_url">Server ändern</string>
-    <string name="condition">Zustand</string>
+    <string name="condition">Zustand: %s</string>
     <string name="confirm_del_reservation">Löschen bestätigen</string>
     <string name="confirm_del_reservation_message">Wollen Sie die Reservation für %s löschen?</string>
     <string name="confirm_reservation">Reservation bestätigen</string>
@@ -47,4 +47,5 @@
     <string name="waiting_position">Warteposition: %s</string>
     <string name="your_loans_will_be_shown_here">Ihre Ausleihen werden hier angezeigt</string>
     <string name="retry">Erneut versuchen</string>
+    <string name="retail_price">Neupreis: %s</string>
 </resources>

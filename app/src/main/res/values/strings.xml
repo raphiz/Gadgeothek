@@ -8,7 +8,7 @@
     <string name="signup">Signup</string>
     <string name="name">Name</string>
     <string name="student_number">Student Number</string>
-    <string name="condition">Condition</string>
+    <string name="condition">Condition: %s</string>
     <string name="reserve">Reserve</string>
     <string name="price">Price</string>
     <string name="delete_reservation">Delete reservation</string>
@@ -46,4 +46,5 @@
     <string name="your_loans_will_be_shown_here">Your loans will be shown here</string>
     <string name="no_gadgets_available">No Gadgets available</string>
     <string name="retry">RETRY</string>
+    <string name="retail_price">Retail Price: %s</string>
 </resources>

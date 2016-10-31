@@ -48,11 +48,11 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
         Gadget gadget = gadgetList.get(position);
 
         holder.title.setText(gadget.getName());
-        String conditionText = String.format("%s: %s",
-                resources.getString(R.string.condition), gadget.getCondition().toString().toLowerCase());
+        String conditionText = String.format(resources.getString(R.string.condition), gadget.getCondition().toString().toLowerCase());
         holder.condition.setText(conditionText);
         holder.manufacturer.setText(gadget.getManufacturer());
-        holder.price.setText(String.valueOf(gadget.getPrice()));
+        String priceText = String.format(resources.getString(R.string.retail_price), String.valueOf(gadget.getPrice()));
+        holder.price.setText(priceText);
 
         // Set default values, we don't know the view properties
         holder.reservedAt.setVisibility(View.GONE);
