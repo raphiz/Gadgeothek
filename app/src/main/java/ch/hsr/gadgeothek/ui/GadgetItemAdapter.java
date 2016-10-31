@@ -54,9 +54,16 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
         holder.manufacturer.setText(gadget.getManufacturer());
         holder.price.setText(String.valueOf(gadget.getPrice()));
 
+        // Set default values, we don't know the view properties
+        holder.reservedAt.setVisibility(View.GONE);
+        holder.reservedAt.setTextColor(ContextCompat.getColor((Context) callback, android.R.color.primary_text_light));
+        holder.reserveButton.setVisibility(View.GONE);
+        holder.deleteReserveButton.setVisibility(View.GONE);
+
+
         Loan loan = findLoan(gadget);
         if (loan != null) {
-            holder.reserveButton.setVisibility(View.GONE);
+            holder.reservedAt.setVisibility(View.VISIBLE);
             if (loan.isOverdue()) {
                 String overDueText = String.format(resources.getString(R.string.loan_overdue),
                         dateFormatter.format(loan.overDueDate()));
@@ -71,15 +78,13 @@ public class GadgetItemAdapter extends RecyclerView.Adapter<GadgetItemAdapter.Ga
         } else {
             Reservation reservation = findReservation(gadget);
             if (reservation != null) {
-                holder.reserveButton.setVisibility(View.GONE);
                 holder.deleteReserveButton.setVisibility(View.VISIBLE);
                 String reservedAtText = String.format(resources.getString(R.string.has_been_reserved_at),
                             dateFormatter.format(reservation.getReservationDate()));
+                holder.reservedAt.setVisibility(View.VISIBLE);
                 holder.reservedAt.setText(reservedAtText);
             } else {
-                holder.reservedAt.setVisibility(View.GONE);
                 holder.reserveButton.setVisibility(View.VISIBLE);
-                holder.deleteReserveButton.setVisibility(View.GONE);
             }
         }
     }
