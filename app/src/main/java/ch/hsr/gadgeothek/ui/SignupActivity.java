@@ -39,7 +39,7 @@ public class SignupActivity extends BaseLoginSignupActivity {
 
                             @Override
                             public void onError(String message) {
-                                ErrorHandler.showOverallErrorMsg(SignupActivity.this, R.id.activity_login, getString(R.string.error_login));
+                                ErrorHandler.showOverallErrorMsg(SignupActivity.this, R.id.activity_signup, getString(R.string.error_login));
                             }
                         });
             }
