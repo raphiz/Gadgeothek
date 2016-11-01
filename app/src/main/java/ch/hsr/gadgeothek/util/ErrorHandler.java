@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
 
+import java.util.List;
+
 public final class ErrorHandler {
 
     public static void showOverallErrorMsg(Activity activity, int viewId, String errorMsg) {
@@ -25,6 +27,12 @@ public final class ErrorHandler {
                 longGap
         };
         vibrator.vibrate(pattern, -1);
+    }
+
+    public static void setErrorMsgOnInputFields(Context context, List<ValidationWrapper> invalidFields) {
+        for (ValidationWrapper validationWrapper : invalidFields) {
+            validationWrapper.getEditText().setError(context.getString(validationWrapper.getErrorMsgID()));
+        }
     }
 
 }

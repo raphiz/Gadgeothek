@@ -7,12 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.hsr.gadgeothek.R;
 import ch.hsr.gadgeothek.service.LibraryService;
 import ch.hsr.gadgeothek.service.SimpleLibraryServiceCallback;
 import ch.hsr.gadgeothek.ui.fragment.ServerAddressDialogFragment;
 import ch.hsr.gadgeothek.util.ErrorHandler;
 import ch.hsr.gadgeothek.util.InputValidator;
+import ch.hsr.gadgeothek.util.ValidationWrapper;
 
 public abstract class BaseLoginSignupActivity extends AppCompatActivity {
 
@@ -22,11 +26,12 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
                            final Context context,
                            final SimpleLibraryServiceCallback loginCallback) {
 
-        boolean hasInvalidFields = InputValidator.checkForEmptyFieldsAndSetErrorMsgs(
-                context, passwordEditText);
-        hasInvalidFields = InputValidator.validateEmailField(context, emailAddressEditText) || hasInvalidFields;
+        List<ValidationWrapper> invalidFields = new ArrayList<>();
+        invalidFields.addAll(InputValidator.checkForEmptyFields(passwordEditText));
+        invalidFields.addAll(InputValidator.validateEmailField(emailAddressEditText));
 
-        if (hasInvalidFields) {
+        if (!invalidFields.isEmpty()) {
+            ErrorHandler.setErrorMsgOnInputFields(context, invalidFields);
             return;
         }
 
@@ -45,15 +50,13 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
                             final Context context,
                             final SimpleLibraryServiceCallback loginCallback) {
 
-        boolean hasInvalidFields = InputValidator.checkForEmptyFieldsAndSetErrorMsgs(
-                context,
-                nameEditText,
-                studentNumberEditText,
-                passwordEditText);
-        hasInvalidFields = InputValidator.validateEmailField(context, emailAddressEditText) || hasInvalidFields;
-        hasInvalidFields = InputValidator.validateNumberFields(context, studentNumberEditText);
+        List<ValidationWrapper> invalidFields = new ArrayList<>();
+        invalidFields.addAll(InputValidator.checkForEmptyFields(nameEditText, studentNumberEditText, passwordEditText));
+        invalidFields.addAll(InputValidator.validateEmailField(emailAddressEditText));
+        invalidFields.addAll(InputValidator.validateNumberFields(studentNumberEditText));
 
-        if (hasInvalidFields) {
+        if (!invalidFields.isEmpty()) {
+            ErrorHandler.setErrorMsgOnInputFields(context, invalidFields);
             return;
         }
 

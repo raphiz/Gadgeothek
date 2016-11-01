@@ -1,8 +1,9 @@
 package ch.hsr.gadgeothek.util;
 
-import android.content.Context;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,34 +14,32 @@ public final class InputValidator {
     final static String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     final static String NUMBER_PATTERN = "-?\\d+(\\.\\d+)?";
 
-    public static boolean checkForEmptyFieldsAndSetErrorMsgs(Context context, EditText... inputFields) {
-        boolean hasEmptyFields = false;
+    public static List<ValidationWrapper> checkForEmptyFields(EditText... inputFields) {
+        List<ValidationWrapper> invalidFields = new ArrayList<>();
         for (EditText inputField : inputFields) {
             if (isFieldEmpty(inputField.getText().toString())) {
-                setErrorMsg(inputField, context, R.string.error_empty_input);
-                hasEmptyFields = true;
+                invalidFields.add(new ValidationWrapper(inputField, R.string.error_empty_input));
             }
         }
-        return hasEmptyFields;
+        return invalidFields;
     }
 
-    public static boolean validateNumberFields(Context context, EditText... numberFields) {
-        boolean hasInvalidFields = false;
+    public static List<ValidationWrapper> validateNumberFields(EditText... numberFields) {
+        List<ValidationWrapper> invalidFields = new ArrayList<>();
         for (EditText numberField : numberFields) {
             if (isValidNumber(numberField.getText().toString())) {
-                setErrorMsg(numberField, context, R.string.error_invalid_input);
-                hasInvalidFields = true;
+                invalidFields.add(new ValidationWrapper(numberField, R.string.error_invalid_input));
             }
         }
-        return hasInvalidFields;
+        return invalidFields;
     }
 
-    public static boolean validateEmailField(Context context, EditText emailAddress) {
-        boolean hasInvalidField = hasInvalidEmail(emailAddress.getText().toString());
-        if (hasInvalidField) {
-            setErrorMsg(emailAddress, context, R.string.error_invalid_input);
+    public static List<ValidationWrapper> validateEmailField(EditText emailAddress) {
+        List<ValidationWrapper> invalidFields = new ArrayList<>();
+        if (hasInvalidEmail(emailAddress.getText().toString())) {
+            invalidFields.add(new ValidationWrapper(emailAddress, R.string.error_invalid_input));
         }
-        return hasInvalidField;
+        return invalidFields;
     }
 
     private static boolean isFieldEmpty(String inputField) {
@@ -55,10 +54,6 @@ public final class InputValidator {
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(emailAddress);
         return !matcher.matches();
-    }
-
-    private static void setErrorMsg(EditText inputField, Context context, int errorMsgID) {
-        inputField.setError(context.getString(errorMsgID));
     }
 
 }
