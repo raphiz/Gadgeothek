@@ -97,12 +97,14 @@ public class LibraryService {
         request.execute();
     }
 
-    public static void register(String mail, String password, String name, String studentenNumber, final SimpleLibraryServiceCallback<Boolean> callback) {
+    public static void register(String mail, String password, String name, String studentenNumber, final Context context, final SimpleLibraryServiceCallback<Boolean> callback) {
         HashMap<String, String> parameter = new HashMap<>();
         parameter.put("email", mail);
         parameter.put("password", password);
         parameter.put("name", name);
         parameter.put("studentnumber", studentenNumber);
+
+        loadServerUrl(context);
 
         Request<Boolean> request = new Request<>(HttpVerb.POST, serverUrl + "/register", Boolean.class, parameter, new SimpleLibraryServiceCallback<Boolean>() {
             @Override

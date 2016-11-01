@@ -66,7 +66,7 @@ public abstract class BaseLoginSignupActivity extends AppCompatActivity {
         final String password = passwordEditText.getText().toString();
         final boolean keepMeLoggedIn = keepMeLoggedInSwitch.isChecked();
 
-        LibraryService.register(emailAddress, password, name, studentNumber, new SimpleLibraryServiceCallback<Boolean>() {
+        LibraryService.register(emailAddress, password, name, studentNumber, context, new SimpleLibraryServiceCallback<Boolean>() {
 
             @Override
             public void onCompletion(Boolean input) {
